@@ -8,12 +8,17 @@ public class Member {
     static int seniorMembershipCost = 1600;
     static double seniorMembershipDiscount = 0.25;
 
+    static int memberIdCounter;
+
+    int memberId;
     String name;
     LocalDate birthday;
-    ArrayList<Payment> payments;
-    boolean paymentStatus;
     boolean membership;
     LocalDate joinedDate;
+
+    ArrayList<Payment> payments;
+
+    boolean paymentStatus;
     double quota;
 
     public double calQuota(){
@@ -35,7 +40,6 @@ public class Member {
     }
     // assumes that the member has been active in all their time
     public double calTotalQuota(){
-        double total = 0.0;
 
         int yearsAsSenior = 0;
         if (getAge() > 59){
@@ -49,17 +53,15 @@ public class Member {
         if (yearsAsMemberBetween18And60 < 0){
             yearsAsMemberBetween18And60 = 0;
         }
-
+        double total = 0.0;
         total += yearsAsMemberUnder18 * youthMembershipCost;
         total += yearsAsMemberBetween18And60 * seniorMembershipCost;
-        total += yearsAsSenior * seniorMembershipCost * (1 - seniorMembershipCost);
+        total += yearsAsSenior * seniorMembershipCost * (1 - seniorMembershipDiscount);
         total += getQuota();
 
         return total;
     }
-
     public int ageAtJoinedDate(){return Period.between(birthday, joinedDate).getYears();}
-
     public double calMemberBalance(){
         double payments = this.calTotalPayments();
         double quotas = this.calTotalQuota();
@@ -72,36 +74,6 @@ public class Member {
         }
         return totalPayments;
     }
-    public String creationPrint() {
-        return "test";
-    }
-    Member(){
-    }
-
-    //to create a new member
-    Member(String name, LocalDate birthday, Boolean membership){
-        this.name = name;
-        this.birthday = birthday;
-        this.payments = new ArrayList<>();
-        this.membership = membership;
-        this.joinedDate = LocalDate.now();
-        this.quota = calQuota();
-    }
-    //to create older members
-    Member(String name, LocalDate birthday, Boolean membership, LocalDate joinedDate){
-        this.name = name;
-        this.birthday = birthday;
-        this.payments = new ArrayList<>();
-        this.membership = membership;
-        this.joinedDate = joinedDate;
-        this.quota = calQuota();
-    }
-    public int getAge(){
-        return Period.between(birthday, LocalDate.now()).getYears();
-    }
-    public void createPayment(LocalDate paymentDate, double amount){
-        payments.add(new Payment(paymentDate, amount, getName()));
-    }
     public void addPayment(Payment payment){
         payments.add(payment);
     }
@@ -112,11 +84,47 @@ public class Member {
         }
         return paymentsString.toString();
     }
-    @Override
-    public String toString() {
-        return name + ", " +  this.getAge();
+    public int getAge(){
+        return Period.between(birthday, LocalDate.now()).getYears();
+    }
+    public void createPayment(LocalDate paymentDate, double amount){
+        payments.add(new Payment(paymentDate, amount, this.memberId));
+    }
+    //TODO
+    public String creationPrint() {
+        return "test";
     }
 
+
+    Member(){}
+    //to create a new member
+    Member(String name, LocalDate birthday, Boolean membership){
+        this.name = name;
+        this.birthday = birthday;
+        this.payments = new ArrayList<>();
+        this.membership = membership;
+        this.joinedDate = LocalDate.now();
+        this.quota = calQuota();
+        this.memberId = memberIdCounter++;
+    }
+    //to create member from database
+    Member(String name, LocalDate birthday, Boolean membership, LocalDate joinedDate, int memberId){
+        this.name = name;
+        this.birthday = birthday;
+        this.payments = new ArrayList<>();
+        this.membership = membership;
+        this.joinedDate = joinedDate;
+        this.quota = calQuota();
+        this.memberId = memberId;
+    }
+
+
+    @Override
+    public String toString() {
+        return name + ", " +  this.getAge() + " medlem i "  + membershipYears() + " år" ;
+    }
+
+    // Setters og Getters
     public String getName() {
         return name;
     }
@@ -156,6 +164,10 @@ public class Member {
     }
     public double getQuota() {return quota;}
     public void setQuota(double quota) {this.quota = quota;}
+    public int getMemberId() {return memberId;}
+    public void setMemberId(int memberId) {this.memberId = memberId;}
+    public int getMemberIdCounter() {return memberIdCounter;}
+    public void setMemberIdCounter(int memberIdCounter) {this.memberIdCounter = memberIdCounter;}
 
 
 }

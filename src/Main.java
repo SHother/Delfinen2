@@ -1,6 +1,6 @@
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -29,6 +29,7 @@ public class Main {
         testBootUp();
 
 
+        System.out.println(readDiscipline());
     }
 
     public static void mainMenu(){
@@ -36,12 +37,15 @@ public class Main {
         do {
             System.out.println("\nDelfinen");
             System.out.println("1. Opret nyt medlem");
-            System.out.println("2. Opret ny træner");
-            System.out.println("3. Skift medlems medlemsstatus");
-            System.out.println("5. Gå et økonomi menuen");
+            System.out.println("2. Opret ny træner"); //TODO
+            System.out.println("3. Skift medlems medlemsstatus"); //TODO
+            System.out.println("5. Gå til økonomi menuen");
+            System.out.println("6. Gå til træner menuen");
+
             System.out.println("8. Log ud");
             System.out.print("Vælg en mulighed: ");
             Scanner scanner = new Scanner(System.in);
+
             int option = readValidInt(scanner);
             switch (option) {
                 case 1:
@@ -49,6 +53,9 @@ public class Main {
                     break;
                 case 5:
                     econMenu();
+                    break;
+                case 6:
+                    trainerMenu();
                     break;
                 case 8:
                     quit = true;
@@ -59,6 +66,99 @@ public class Main {
             }
         } while (!quit);
     }
+
+    private static void trainerMenu() {
+        System.out.println("\nØkonomi");
+        System.out.println("1. Register træningstid"); //IN PROGRESS
+        System.out.println("2. Register konkurrencetid"); //TODO
+        System.out.println("3. Se top 5"); //TODO
+        System.out.println("9. Gå tilbage");
+        System.out.print("Vælg en mulighed: ");
+        Scanner scanner = new Scanner(System.in);
+        int option = readValidInt(scanner);
+        switch (option) {
+            case 1, 2:
+                registerTime(option);
+                break;
+            case 3:
+
+            case 5:
+        }
+    }
+
+    private static void registerTime(int badCoding) {
+        System.out.println("Vælg medlem hvis tid skal registres");
+        CompetitionSwimmer com = findComSwimmerFromId();
+        if (com != null) {
+            TrainingTime tt = registerTrainingTime(com);
+            if (tt != null) {
+                if(badCoding == 2){
+                    tt = registerCompetisionTime(com, tt);
+                }
+                com.addRecordTime(tt);
+                System.out.println("Tid registreret");
+            }
+        }
+    }
+
+    private static CompetisionTime registerCompetisionTime(CompetitionSwimmer swimmer, TrainingTime tt) {
+        System.out.print("Skriv navn på stævne: ");
+        String comp = scanner.nextLine();
+        System.out.print("Skriv " + swimmer.getName() + "'s placering til " + comp + ": ");
+        int placement = readValidInt(scanner);
+        return new CompetisionTime(tt, comp, placement);
+    }
+
+    public static TrainingTime registerTrainingTime(CompetitionSwimmer com) {
+        System.out.print("Hvilken disiplin blev svømmet?");
+        Discipline dis = readDiscipline();
+        if(!com.getDisciplines().contains(dis)){
+            System.out.println("Svømmeren er ikke registrert i denne disiplin.");
+            System.out.print("Vil du tilføje denne disiplin til svømmerens liste? (Y/N): ");
+            String choice = scanner.nextLine();
+            if(choice.equalsIgnoreCase("y")){
+                com.addDisciplin(dis);
+                System.out.println("Disiplin registrert");
+            } else {
+                System.out.println("Tid ikke registrert");
+                return null;
+            }
+        }
+        System.out.print("Dato (yyyy-mm-dd): ");
+        LocalDate date = readDate();
+
+        System.out.print("Registrert tid i " + dis.toString().toLowerCase() + ": ");
+        LocalTime time = readTime();
+
+        return new TrainingTime(time, dis, date);
+
+    }
+    public static Discipline readDiscipline(){
+        int i = 1;
+        for (Discipline dis : Discipline.values()) {
+            System.out.println(i + ") " + dis);
+            i++;
+        }
+        System.out.print("Vælg relevant id: ");
+        return Discipline.values()[readValidInt(scanner)-1];
+    }
+    public static CompetitionSwimmer findComSwimmerFromId() {
+        for (Member member: members){
+            if (member instanceof CompetitionSwimmer){
+                System.out.println(member.getMemberId() + ") " + member.getName());
+            }
+        }
+        System.out.print("Skriv Id'et på medlem: ");
+        int option = readValidInt(scanner);
+        for (Member member: members){
+            if (member.getMemberId() == option && member instanceof CompetitionSwimmer){
+                return (CompetitionSwimmer) member;
+            }
+        }
+        System.out.println("Medlem " + option + " kan ikke findes!");
+        return null;
+    }
+
     public static void econMenu(){
         boolean quit = false;
         do {
@@ -68,26 +168,27 @@ public class Main {
             System.out.println("3. Se medlems betalinger");
             System.out.println("4. Indberet betaling");
             System.out.println("5. Kontigent i alt");
-
-            System.out.println("6. Gå tilbage");
+            System.out.println("9. Gå tilbage");
             System.out.print("Vælg en mulighed: ");
             Scanner scanner = new Scanner(System.in);
             int option = readValidInt(scanner);
             switch (option) {
                 case 1:
-                    memberBalance();
+                    membersBalancePrint();
                     break;
                 case 2:
                     membersInMinus();
                     break;
                 case 3:
-                    promptNewPayment();
-                case 4:
-
-                case 5:
-                    totalKontigent();
+                    promptMemberPayments();
                     break;
-                case 6:
+                case 4:
+                    promptNewPayment();
+                    break;
+                case 5:
+                    totalContingent();
+                    break;
+                case 9:
                     quit = true;
                     break;
                 default:
@@ -97,47 +198,80 @@ public class Main {
         } while (!quit);
     }
 
+    //TODO
+    private static void promptMemberPayments() {
+
+    }
     private static void promptNewPayment() {
         System.out.println("Vælg medlem som har betalt");
-        int i = 1;
-        for (Member member : members) {
-            System.out.println(i + ") " + member.getName() + ", balance " + member.calMemberBalance() + "kr");
-            i++;
-        }
-        System.out.print("Vælg relevant ID på medlem ");
-        int option = readValidInt(scanner);
-        Member m = members.get(option);
-        System.out.print("Dato (yyyy-mm-dd): ");
-        LocalDate date = LocalDate.parse(scanner.nextLine());
-        System.out.print("Beløb: ");
-        double amount = Double.parseDouble(scanner.nextLine());
-        createPayment(m, date, amount);
 
-        //System.out.println("");
+        Member m = findMemberFromId();
+        if (m != null) {
+            System.out.print("Dato (yyyy-mm-dd): ");
+            LocalDate date = LocalDate.parse(scanner.nextLine());
+            System.out.print("Beløb: ");
+            double amount = Double.parseDouble(scanner.nextLine());
+            createPayment(m, date, amount);
+        }
+    }
+
+    public static Member findMemberFromId() {
+        for (Member member: members){
+            System.out.println(member.getMemberId() + ") " + member.getName());
+        }
+        System.out.print("Skriv Id'et på medlem: ");
+        int option = readValidInt(scanner);
+        for (Member member: members){
+            if (member.getMemberId() == option){
+                return member;
+            }
+        }
+        System.out.println("Medlem " + option + " kan ikke findes!");
+        return null;
     }
 
     public static void createPayment(Member member, LocalDate date, double amount){
         member.createPayment(date, amount);
     }
 
-    private static void memberBalance() {
+    private static void membersBalancePrint() {
         int i = 1;
         for (Member member : members) {
-            System.out.println(i + ") " + member.name + "\tbalance: " + member.calMemberBalance());
+            System.out.println(i + ")\t" + member.name + "\tbalance: " + member.calMemberBalance());
             i++;
         }
+    }
+    //TODO
+    public static LocalDate readDate(){
+        return LocalDate.parse(scanner.nextLine());
+    }
+
+    //TODO
+    public static LocalTime readTime(){
+        return LocalTime.parse(scanner.nextLine());
     }
 
     //TODO
     private static void membersInMinus() {
+        double balance;
+        for (Member member : members) {
+            balance = member.calMemberBalance();
+            if (balance < 0) {
+                System.out.println(member.name + "\tbalance: " + member.calMemberBalance());
+            }
+        }
     }
 
-    private static void totalKontigent() {
+    private static void totalContingent() {
         double total = 0;
         for (Member member : members) {
             total += member.getQuota();
         }
         System.out.println(total);
+    }
+    public static Trainer createNewTrainer(String name, String birthdayStr) {
+        LocalDate birthday = LocalDate.parse(birthdayStr);
+        return new Trainer(name, birthday, true);
     }
     public static void promptNewMember(Scanner scanner){
         System.out.println("Opret nyt medlem");
@@ -249,15 +383,12 @@ public class Main {
         trainers.add(createNewTrainer("Bob uber Trainer", "1996-04-10"));
         return trainers;
     }
-    public static Trainer createNewTrainer(String name, String birthdayStr) {
-        LocalDate birthday = LocalDate.parse(birthdayStr);
-        return new Trainer(name, birthday, true);
-    }
+
     //TODO slow, stupid, unstable
     public static void addPaymentsToMember(){
         for(Payment p:payments){
             for (Member member : members){
-                if (p.memberName.equals(member.name)){
+                if (p.getMemberId() == member.getMemberId()){
                     member.addPayment(p);
                 }
             }

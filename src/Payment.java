@@ -4,14 +4,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Payment {
-    String memberName;
+    int memberId;
     LocalDate paymentDate;
     double amount;
 
-    Payment(LocalDate paymentDate, double amount, String memberName) {
+    Payment(LocalDate paymentDate, double amount, int memberId) {
         this.paymentDate = paymentDate;
         this.amount = amount;
-        this.memberName = memberName;
+        this.memberId = memberId;
     }
 
     @Override
@@ -24,6 +24,6 @@ public class Payment {
     public void setPaymentDate(LocalDate paymentDate) {this.paymentDate = paymentDate;}
     public double getAmount() {return amount;}
     public void setAmount(double amount) {this.amount = amount;}
-    public String getMemberName() {return memberName;}
-    public void setMemberName(String memberName) {this.memberName = memberName;}
+    public int getMemberId() {return memberId;}
+    public void setMemberId(int memberName) {this.memberId = memberId;}
 }

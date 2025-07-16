@@ -10,11 +10,12 @@ public class FileHandler {
     public void saveMembers(ArrayList<Member> members) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(MEMBER_FILE))) {
             for (Member m : members) {
-                writer.printf("%s;%s;%b;%s;%n",
+                writer.printf("%s;%s;%b;%s;%d%n",
                         m.getName(),
                         m.getBirthday(),
                         m.isMembership(),
-                        m.getJoinedDate());
+                        m.getJoinedDate(),
+                        m.getMemberId());
             }
         } catch (IOException e) {
             System.out.println("Could not save members: " + e.getMessage());
@@ -25,7 +26,7 @@ public class FileHandler {
         try (PrintWriter writer = new PrintWriter(new FileWriter(PAYMENT_FILE))) {
             for (Payment p : payments) {
                 writer.printf("%s;%s;%.2f%n",
-                        p.getMemberName(),
+                        p.getMemberId(),
                         p.getPaymentDate(),
                         p.getAmount());
             }
@@ -38,15 +39,21 @@ public class FileHandler {
         ArrayList<Member> members = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(MEMBER_FILE))) {
             String line;
+            int highetsId = 0;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
                 String name = parts[0];
                 LocalDate birthday = LocalDate.parse(parts[1]);
                 boolean membership = Boolean.parseBoolean(parts[2]);
                 LocalDate joinedDate = LocalDate.parse(parts[3]);
+                int id = Integer.parseInt(parts[4]);
+                if (id > highetsId) {
+                    highetsId = id;
+                }
 
-                members.add(new Member(name, birthday, membership, joinedDate));
+                members.add(new Member(name, birthday, membership, joinedDate, id));
             }
+            members.get(0).setMemberIdCounter(highetsId);
         } catch (IOException e) {
             System.out.println("Could not load members: " + e.getMessage());
         }
@@ -59,10 +66,10 @@ public class FileHandler {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");
-                String memberName = parts[0];
+                int memberId = Integer.parseInt(parts[0]);
                 LocalDate date = LocalDate.parse(parts[1]);
                 double amount = Double.parseDouble(parts[2]);
-                payments.add(new Payment(date, amount, memberName));
+                payments.add(new Payment(date, amount, memberId));
             }
         } catch (IOException e) {
             System.out.println("Could not load payments: " + e.getMessage());
