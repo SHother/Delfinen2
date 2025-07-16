@@ -28,7 +28,6 @@ public class Main {
     public static void main(String[] args) {
         testBootUp();
 
-
         System.out.println(readDiscipline());
     }
 
@@ -100,15 +99,6 @@ public class Main {
             }
         }
     }
-
-    private static CompetisionTime registerCompetisionTime(CompetitionSwimmer swimmer, TrainingTime tt) {
-        System.out.print("Skriv navn på stævne: ");
-        String comp = scanner.nextLine();
-        System.out.print("Skriv " + swimmer.getName() + "'s placering til " + comp + ": ");
-        int placement = readValidInt(scanner);
-        return new CompetisionTime(tt, comp, placement);
-    }
-
     public static TrainingTime registerTrainingTime(CompetitionSwimmer com) {
         System.out.print("Hvilken disiplin blev svømmet?");
         Discipline dis = readDiscipline();
@@ -133,30 +123,12 @@ public class Main {
         return new TrainingTime(time, dis, date);
 
     }
-    public static Discipline readDiscipline(){
-        int i = 1;
-        for (Discipline dis : Discipline.values()) {
-            System.out.println(i + ") " + dis);
-            i++;
-        }
-        System.out.print("Vælg relevant id: ");
-        return Discipline.values()[readValidInt(scanner)-1];
-    }
-    public static CompetitionSwimmer findComSwimmerFromId() {
-        for (Member member: members){
-            if (member instanceof CompetitionSwimmer){
-                System.out.println(member.getMemberId() + ") " + member.getName());
-            }
-        }
-        System.out.print("Skriv Id'et på medlem: ");
-        int option = readValidInt(scanner);
-        for (Member member: members){
-            if (member.getMemberId() == option && member instanceof CompetitionSwimmer){
-                return (CompetitionSwimmer) member;
-            }
-        }
-        System.out.println("Medlem " + option + " kan ikke findes!");
-        return null;
+    private static CompetisionTime registerCompetisionTime(CompetitionSwimmer swimmer, TrainingTime tt) {
+        System.out.print("Skriv navn på stævne: ");
+        String comp = scanner.nextLine();
+        System.out.print("Skriv " + swimmer.getName() + "'s placering til " + comp + ": ");
+        int placement = readValidInt(scanner);
+        return new CompetisionTime(tt, comp, placement);
     }
 
     public static void econMenu(){
@@ -198,7 +170,7 @@ public class Main {
         } while (!quit);
     }
 
-    //TODO
+    //TODO see a members payments
     private static void promptMemberPayments() {
 
     }
@@ -208,7 +180,7 @@ public class Main {
         Member m = findMemberFromId();
         if (m != null) {
             System.out.print("Dato (yyyy-mm-dd): ");
-            LocalDate date = LocalDate.parse(scanner.nextLine());
+            LocalDate date = readDate();
             System.out.print("Beløb: ");
             double amount = Double.parseDouble(scanner.nextLine());
             createPayment(m, date, amount);
@@ -229,11 +201,26 @@ public class Main {
         System.out.println("Medlem " + option + " kan ikke findes!");
         return null;
     }
+    public static CompetitionSwimmer findComSwimmerFromId() {
+        for (Member member: members){
+            if (member instanceof CompetitionSwimmer){
+                System.out.println(member.getMemberId() + ") " + member.getName());
+            }
+        }
+        System.out.print("Skriv Id'et på medlem: ");
+        int option = readValidInt(scanner);
+        for (Member member: members){
+            if (member.getMemberId() == option && member instanceof CompetitionSwimmer){
+                return (CompetitionSwimmer) member;
+            }
+        }
+        System.out.println("Medlem " + option + " kan ikke findes!");
+        return null;
+    }
 
     public static void createPayment(Member member, LocalDate date, double amount){
         member.createPayment(date, amount);
     }
-
     private static void membersBalancePrint() {
         int i = 1;
         for (Member member : members) {
@@ -241,16 +228,6 @@ public class Main {
             i++;
         }
     }
-    //TODO
-    public static LocalDate readDate(){
-        return LocalDate.parse(scanner.nextLine());
-    }
-
-    //TODO
-    public static LocalTime readTime(){
-        return LocalTime.parse(scanner.nextLine());
-    }
-
     //TODO
     private static void membersInMinus() {
         double balance;
@@ -261,7 +238,6 @@ public class Main {
             }
         }
     }
-
     private static void totalContingent() {
         double total = 0;
         for (Member member : members) {
@@ -385,6 +361,7 @@ public class Main {
     }
 
     //TODO slow, stupid, unstable
+    //Boot up info dump
     public static void addPaymentsToMember(){
         for(Payment p:payments){
             for (Member member : members){
@@ -394,6 +371,27 @@ public class Main {
             }
         }
     }
+
+    //TODO
+    public static LocalDate readDate(){
+        return LocalDate.parse(scanner.nextLine());
+    }
+
+    //TODO
+    public static LocalTime readTime(){
+        return LocalTime.parse(scanner.nextLine());
+    }
+
+    public static Discipline readDiscipline(){
+        int i = 1;
+        for (Discipline dis : Discipline.values()) {
+            System.out.println(i + ") " + dis);
+            i++;
+        }
+        System.out.print("Vælg relevant id: ");
+        return Discipline.values()[readValidInt(scanner)-1];
+    }
+
     //if no int is found, promt the user to give a valid int
     public static int readValidInt(Scanner scanner) {
         while (!scanner.hasNextInt()) {
