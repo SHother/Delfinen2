@@ -1,3 +1,6 @@
+import Models.*;
+import Storage.FileHandlerMembers;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -6,12 +9,14 @@ import java.util.Set;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
-    private static FileHandler fh = new FileHandler();
+    private static FileHandlerMembers fh = new FileHandlerMembers();
 
     private static ArrayList<Trainer> trainers;
     private static Trainer trainer;
     private static ArrayList<Member> members;
     private static Member soren;
+    private static ArrayList<CompetitionSwimmer> swimmers;
+    private static CompetitionSwimmer swimmer;
     private static ArrayList<Payment> payments;
 
     public static void testBootUp(){
@@ -80,8 +85,21 @@ public class Main {
                 registerTime(option);
                 break;
             case 3:
-
+                printTop5times();
             case 5:
+        }
+    }
+
+    private static void printTop5times() {
+        for (Discipline dis : Discipline.values()) {
+            System.out.println(dis);
+            ArrayList<TrainingTime> bestTimeInDis = new ArrayList<>();
+            for (CompetitionSwimmer comSwimmer : swimmers) {
+                if (comSwimmer.hasDiscipline(dis)) {
+                    bestTimeInDis.add(comSwimmer.fastestDisTime(dis));
+                }
+            }
+            bestTimeInDis.sort();
         }
     }
 
@@ -107,7 +125,7 @@ public class Main {
             System.out.print("Vil du tilføje denne disiplin til svømmerens liste? (Y/N): ");
             String choice = scanner.nextLine();
             if(choice.equalsIgnoreCase("y")){
-                com.addDisciplin(dis);
+                com.addDiscipline(dis);
                 System.out.println("Disiplin registrert");
             } else {
                 System.out.println("Tid ikke registrert");
@@ -120,7 +138,7 @@ public class Main {
         System.out.print("Registrert tid i " + dis.toString().toLowerCase() + ": ");
         LocalTime time = readTime();
 
-        return new TrainingTime(time, dis, date);
+        return new TrainingTime(time, dis, date, com.getMemberId());
 
     }
     private static CompetisionTime registerCompetisionTime(CompetitionSwimmer swimmer, TrainingTime tt) {
@@ -224,7 +242,7 @@ public class Main {
     private static void membersBalancePrint() {
         int i = 1;
         for (Member member : members) {
-            System.out.println(i + ")\t" + member.name + "\tbalance: " + member.calMemberBalance());
+            System.out.println(i + ")\t" + member.getName() + "\tbalance: " + member.calMemberBalance());
             i++;
         }
     }
@@ -234,7 +252,7 @@ public class Main {
         for (Member member : members) {
             balance = member.calMemberBalance();
             if (balance < 0) {
-                System.out.println(member.name + "\tbalance: " + member.calMemberBalance());
+                System.out.println(member.getName() + "\tbalance: " + member.calMemberBalance());
             }
         }
     }
@@ -355,8 +373,8 @@ public class Main {
     }
     public static ArrayList<Trainer> createTestTrainers() {
         ArrayList<Trainer> trainers = new ArrayList<>();
-        trainers.add(createNewTrainer("Alice Super Trainer", "2019-01-21"));
-        trainers.add(createNewTrainer("Bob uber Trainer", "1996-04-10"));
+        trainers.add(createNewTrainer("Alice Super Models.Trainer", "2019-01-21"));
+        trainers.add(createNewTrainer("Bob uber Models.Trainer", "1996-04-10"));
         return trainers;
     }
 

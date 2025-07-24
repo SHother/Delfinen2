@@ -1,14 +1,14 @@
-import java.time.DateTimeException;
+package Models;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class Payment {
     int memberId;
     LocalDate paymentDate;
     double amount;
 
-    Payment(LocalDate paymentDate, double amount, int memberId) {
+    public Payment(LocalDate paymentDate, double amount, int memberId) {
         this.paymentDate = paymentDate;
         this.amount = amount;
         this.memberId = memberId;

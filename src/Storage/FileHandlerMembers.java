@@ -1,8 +1,13 @@
+package Storage;
+
+import Models.Member;
+import Models.Payment;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class FileHandler {
+public class FileHandlerMembers {
 
     private static final String MEMBER_FILE = "members.txt";
     private static final String PAYMENT_FILE = "payments.txt";

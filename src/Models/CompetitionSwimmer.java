@@ -1,3 +1,5 @@
+package Models;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -19,7 +21,12 @@ public class CompetitionSwimmer extends Member {
         this.memberId = memberIdCounter++;
     }
     public void addRecordTime(LocalTime time, LocalDate date, Discipline dis) {
-        trainingTimes.add(new TrainingTime(time, dis, date));
+        trainingTimes.add(new TrainingTime(time, dis, date, this.memberId));
+    }
+
+    public TrainingTime fastestDisTime(Discipline discipline) {
+        trainingTimes.sort(TrainingTime::compareTo);
+        return trainingTimes.get(0);
     }
 
     public void setTrainingTimes(ArrayList<TrainingTime> trainingTimes) {this.trainingTimes = trainingTimes;}
@@ -27,7 +34,8 @@ public class CompetitionSwimmer extends Member {
     public void setTrainer(Trainer trainer) {this.trainer = trainer;}
     public Trainer getTrainer() {return trainer;}
     public void setDisciplines(Set<Discipline> disciplines) {this.disciplines = disciplines;}
+    public boolean hasDiscipline(Discipline dis) {return disciplines.contains(dis);}
     public Set<Discipline> getDisciplines() {return disciplines;}
     public void addRecordTime(TrainingTime trainingTime) {this.trainingTimes.add(trainingTime);}
-    public void addDisciplin(Discipline discipline) {this.disciplines.add(discipline);}
+    public void addDiscipline(Discipline discipline) {this.disciplines.add(discipline);}
 }
