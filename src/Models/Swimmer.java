@@ -4,7 +4,7 @@ import java.time.*;
 import java.util.ArrayList;
 
 
-public class Member implements Comparable<Member> {
+public class Swimmer implements Comparable<Swimmer> {
     static int passiveMembershipCost = 500;
     static int youthMembershipCost = 1000;
     static int seniorMembershipCost = 1600;
@@ -111,11 +111,11 @@ public class Member implements Comparable<Member> {
     }
 
 
-    Member() {
+    Swimmer() {
     }
 
     //to create a new member
-    public Member(String name, LocalDate birthday, Boolean membership) {
+    public Swimmer(String name, LocalDate birthday, Boolean membership) {
         this.name = name;
         this.birthday = birthday;
         this.payments = new ArrayList<>();
@@ -126,7 +126,7 @@ public class Member implements Comparable<Member> {
     }
 
     //to create member from database
-    public Member(String name, LocalDate birthday, Boolean membership, LocalDate joinedDate, int memberId) {
+    public Swimmer(String name, LocalDate birthday, Boolean membership, LocalDate joinedDate, int memberId) {
         this.name = name;
         this.birthday = birthday;
         this.payments = new ArrayList<>();
@@ -143,7 +143,7 @@ public class Member implements Comparable<Member> {
     }
 
     @Override
-    public int compareTo(Member o) {
+    public int compareTo(Swimmer o) {
         return this.memberId - o.memberId;
     }
 
@@ -218,7 +218,7 @@ public class Member implements Comparable<Member> {
     }
 
     public void setMemberIdCounter(int memberIdCounter) {
-        Member.memberIdCounter = memberIdCounter;
+        Swimmer.memberIdCounter = memberIdCounter;
     }
 
 

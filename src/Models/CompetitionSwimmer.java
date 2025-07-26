@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class CompetitionSwimmer extends Member {
+public class CompetitionSwimmer extends Swimmer {
     ArrayList<TrainingTime> trainingTimes;
     Trainer trainer;
     Set<Discipline> disciplines;

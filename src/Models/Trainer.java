@@ -3,7 +3,7 @@ package Models;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Trainer extends Member{
+public class Trainer extends Swimmer {
     public Trainer(String name, LocalDate birthday, Boolean membership){
         this.name = name;
         this.birthday = birthday;

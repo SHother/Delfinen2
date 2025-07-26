@@ -1,6 +1,6 @@
 package Storage;
 
-import Models.Member;
+import Models.Swimmer;
 import Models.Payment;
 
 import java.io.*;
@@ -12,9 +12,9 @@ public class FileHandlerMembers {
     private static final String MEMBER_FILE = "members.txt";
     private static final String PAYMENT_FILE = "payments.txt";
 
-    public void saveMembers(ArrayList<Member> members) {
+    public void saveMembers(ArrayList<Swimmer> swimmers) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(MEMBER_FILE))) {
-            for (Member m : members) {
+            for (Swimmer m : swimmers) {
                 writer.printf("%s;%s;%b;%s;%d%n",
                         m.getName(),
                         m.getBirthday(),
@@ -40,8 +40,8 @@ public class FileHandlerMembers {
         }
     }
 
-    public ArrayList<Member> loadMembers() {
-        ArrayList<Member> members = new ArrayList<>();
+    public ArrayList<Swimmer> loadMembers() {
+        ArrayList<Swimmer> swimmers = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(MEMBER_FILE))) {
             String line;
             int highetsId = 0;
@@ -56,13 +56,13 @@ public class FileHandlerMembers {
                     highetsId = id;
                 }
 
-                members.add(new Member(name, birthday, membership, joinedDate, id));
+                swimmers.add(new Swimmer(name, birthday, membership, joinedDate, id));
             }
-            members.get(0).setMemberIdCounter(highetsId);
+            swimmers.get(0).setMemberIdCounter(highetsId);
         } catch (IOException e) {
             System.out.println("Could not load members: " + e.getMessage());
         }
-        return members;
+        return swimmers;
     }
 
     public ArrayList<Payment> loadPayments() {

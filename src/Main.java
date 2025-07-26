@@ -13,15 +13,15 @@ public class Main {
 
     private static ArrayList<Trainer> trainers;
     private static Trainer trainer;
-    private static ArrayList<Member> members;
-    private static Member soren;
+    private static ArrayList<Swimmer> swimmers;
+    private static Swimmer soren;
     private static ArrayList<CompetitionSwimmer> swimmers;
     private static CompetitionSwimmer swimmer;
     private static ArrayList<Payment> payments;
 
     public static void testBootUp(){
-        members = fh.loadMembers();
-        soren = members.get(5);
+        swimmers = fh.loadMembers();
+        soren = swimmers.get(5);
 
         trainers = createTestTrainers();
         trainer = trainers.get(0);
@@ -90,13 +90,14 @@ public class Main {
         }
     }
 
-    private static void printTop5times() {
+    private static void printTop5times(ArrayList<CompetitionSwimmer> CompSwimmers) {
+        ArrayList<ArrayList<CompetitionSwimmer>> bestInDis = new ArrayList<>();
         for (Discipline dis : Discipline.values()) {
             System.out.println(dis);
             ArrayList<TrainingTime> bestTimeInDis = new ArrayList<>();
-            for (CompetitionSwimmer comSwimmer : swimmers) {
-                if (comSwimmer.hasDiscipline(dis)) {
-                    bestTimeInDis.add(comSwimmer.fastestDisTime(dis));
+            for (Swimmer cs : CompSwimmers) {
+                if (cs.hasDiscipline(dis)) {
+                    bestTimeInDis.add(cs.fastestDisTime(dis));
                 }
             }
             bestTimeInDis.sort();
@@ -141,12 +142,12 @@ public class Main {
         return new TrainingTime(time, dis, date, com.getMemberId());
 
     }
-    private static CompetisionTime registerCompetisionTime(CompetitionSwimmer swimmer, TrainingTime tt) {
+    private static CompetitionTime registerCompetisionTime(CompetitionSwimmer swimmer, TrainingTime tt) {
         System.out.print("Skriv navn på stævne: ");
         String comp = scanner.nextLine();
         System.out.print("Skriv " + swimmer.getName() + "'s placering til " + comp + ": ");
         int placement = readValidInt(scanner);
-        return new CompetisionTime(tt, comp, placement);
+        return new CompetitionTime(tt, comp, placement);
     }
 
     public static void econMenu(){
@@ -195,7 +196,7 @@ public class Main {
     private static void promptNewPayment() {
         System.out.println("Vælg medlem som har betalt");
 
-        Member m = findMemberFromId();
+        Swimmer m = findMemberFromId();
         if (m != null) {
             System.out.print("Dato (yyyy-mm-dd): ");
             LocalDate date = readDate();
@@ -205,61 +206,61 @@ public class Main {
         }
     }
 
-    public static Member findMemberFromId() {
-        for (Member member: members){
-            System.out.println(member.getMemberId() + ") " + member.getName());
+    public static Swimmer findMemberFromId() {
+        for (Swimmer swimmer : swimmers){
+            System.out.println(swimmer.getMemberId() + ") " + swimmer.getName());
         }
         System.out.print("Skriv Id'et på medlem: ");
         int option = readValidInt(scanner);
-        for (Member member: members){
-            if (member.getMemberId() == option){
-                return member;
+        for (Swimmer swimmer : swimmers){
+            if (swimmer.getMemberId() == option){
+                return swimmer;
             }
         }
         System.out.println("Medlem " + option + " kan ikke findes!");
         return null;
     }
     public static CompetitionSwimmer findComSwimmerFromId() {
-        for (Member member: members){
-            if (member instanceof CompetitionSwimmer){
-                System.out.println(member.getMemberId() + ") " + member.getName());
+        for (Swimmer swimmer : swimmers){
+            if (swimmer instanceof CompetitionSwimmer){
+                System.out.println(swimmer.getMemberId() + ") " + swimmer.getName());
             }
         }
         System.out.print("Skriv Id'et på medlem: ");
         int option = readValidInt(scanner);
-        for (Member member: members){
-            if (member.getMemberId() == option && member instanceof CompetitionSwimmer){
-                return (CompetitionSwimmer) member;
+        for (Swimmer swimmer : swimmers){
+            if (swimmer.getMemberId() == option && swimmer instanceof CompetitionSwimmer){
+                return (CompetitionSwimmer) swimmer;
             }
         }
         System.out.println("Medlem " + option + " kan ikke findes!");
         return null;
     }
 
-    public static void createPayment(Member member, LocalDate date, double amount){
-        member.createPayment(date, amount);
+    public static void createPayment(Swimmer swimmer, LocalDate date, double amount){
+        swimmer.createPayment(date, amount);
     }
     private static void membersBalancePrint() {
         int i = 1;
-        for (Member member : members) {
-            System.out.println(i + ")\t" + member.getName() + "\tbalance: " + member.calMemberBalance());
+        for (Swimmer swimmer : swimmers) {
+            System.out.println(i + ")\t" + swimmer.getName() + "\tbalance: " + swimmer.calMemberBalance());
             i++;
         }
     }
     //TODO
     private static void membersInMinus() {
         double balance;
-        for (Member member : members) {
-            balance = member.calMemberBalance();
+        for (Swimmer swimmer : swimmers) {
+            balance = swimmer.calMemberBalance();
             if (balance < 0) {
-                System.out.println(member.getName() + "\tbalance: " + member.calMemberBalance());
+                System.out.println(swimmer.getName() + "\tbalance: " + swimmer.calMemberBalance());
             }
         }
     }
     private static void totalContingent() {
         double total = 0;
-        for (Member member : members) {
-            total += member.getQuota();
+        for (Swimmer swimmer : swimmers) {
+            total += swimmer.getQuota();
         }
         System.out.println(total);
     }
@@ -302,14 +303,14 @@ public class Main {
         } while (true);
 
                 if (!competition){
-            Member newMember = new Member(name, birthday, membership);
-            System.out.println(newMember);
+            Swimmer newSwimmer = new Swimmer(name, birthday, membership);
+            System.out.println(newSwimmer);
             System.out.print("Er medlem korrekt og skal oprettes? Y/N: ");
             String answer = scanner.nextLine();
             if (answer.equals("Y")){
-                members.add(newMember);
+                swimmers.add(newSwimmer);
                 System.out.println("Medlem oprettet med kontigent:"); //TODO print forventet kontigent
-                System.out.println(newMember.creationPrint());
+                System.out.println(newSwimmer.creationPrint());
 
             }
         }
@@ -351,25 +352,25 @@ public class Main {
                 }
             }
             CompetitionSwimmer newMember = new CompetitionSwimmer(name, birthday, membership, trainer, disciplines);
-            members.add(newMember);
+            swimmers.add(newMember);
             System.out.println(newMember);
         }
 
     }
-    public static Member createNewMember(String firstName, String birthdayStr) {
+    public static Swimmer createNewMember(String firstName, String birthdayStr) {
         LocalDate birthday = LocalDate.parse(birthdayStr);
-        Member member = new Member(firstName, birthday, true);
-        return member;
+        Swimmer swimmer = new Swimmer(firstName, birthday, true);
+        return swimmer;
     }
-    public double calculateQuota(Member member){
-        return member.calQuota();
+    public double calculateQuota(Swimmer swimmer){
+        return swimmer.calQuota();
     }
-    public static ArrayList<Member> createTestMembers() {
-        ArrayList<Member> members = new ArrayList<>();
-        members.add(createNewMember("Alice", "2019-01-21"));
-        members.add(createNewMember("Bob", "1996-04-10"));
-        members.add(createNewMember("Charlie", "2000-01-01"));
-        return members;
+    public static ArrayList<Swimmer> createTestMembers() {
+        ArrayList<Swimmer> swimmers = new ArrayList<>();
+        swimmers.add(createNewMember("Alice", "2019-01-21"));
+        swimmers.add(createNewMember("Bob", "1996-04-10"));
+        swimmers.add(createNewMember("Charlie", "2000-01-01"));
+        return swimmers;
     }
     public static ArrayList<Trainer> createTestTrainers() {
         ArrayList<Trainer> trainers = new ArrayList<>();
@@ -382,20 +383,20 @@ public class Main {
     //Boot up info dump
     public static void addPaymentsToMember(){
         for(Payment p:payments){
-            for (Member member : members){
-                if (p.getMemberId() == member.getMemberId()){
-                    member.addPayment(p);
+            for (Swimmer swimmer : swimmers){
+                if (p.getMemberId() == swimmer.getMemberId()){
+                    swimmer.addPayment(p);
                 }
             }
         }
     }
 
-    //TODO
+    //TODO Throw custom exception
     public static LocalDate readDate(){
         return LocalDate.parse(scanner.nextLine());
     }
 
-    //TODO
+    //TODO Throw custom exception
     public static LocalTime readTime(){
         return LocalTime.parse(scanner.nextLine());
     }
