@@ -1,5 +1,7 @@
 import Models.*;
-import Storage.FileHandlerMembers;
+import Storage.FileHandlerPayments;
+import Storage.FileHandlerSwimmers;
+import Storage.FileHandlerTimes;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -8,25 +10,28 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Main {
-    private static Scanner scanner = new Scanner(System.in);
-    private static FileHandlerMembers fh = new FileHandlerMembers();
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final FileHandlerSwimmers s_fh = new FileHandlerSwimmers();
+    private static final FileHandlerPayments p_fh = new FileHandlerPayments();
+    private static final FileHandlerTimes t_fh = new FileHandlerTimes();
 
     private static ArrayList<Trainer> trainers;
     private static Trainer trainer;
     private static ArrayList<Swimmer> swimmers;
     private static Swimmer soren;
-    private static ArrayList<CompetitionSwimmer> swimmers;
-    private static CompetitionSwimmer swimmer;
+    private static ArrayList<CompetitionSwimmer> comSwimmers;
+    private static CompetitionSwimmer comSwimmer;
     private static ArrayList<Payment> payments;
+    private static ArrayList<TrainingTime> trainingTimes;
 
     public static void testBootUp(){
-        swimmers = fh.loadMembers();
+        swimmers = s_fh.loadMembers();
         soren = swimmers.get(5);
 
         trainers = createTestTrainers();
-        trainer = trainers.get(0);
+        trainer = trainers.getFirst();
 
-        payments = fh.loadPayments();
+        payments = p_fh.loadPayments();
         addPaymentsToMember();
     }
 
@@ -42,7 +47,7 @@ public class Main {
             System.out.println("\nDelfinen");
             System.out.println("1. Opret nyt medlem");
             System.out.println("2. Opret ny træner"); //TODO
-            System.out.println("3. Skift medlems medlemsstatus"); //TODO
+            System.out.println("3. Skift medlems medlemsstatus"); //TODO Nope
             System.out.println("5. Gå til økonomi menuen");
             System.out.println("6. Gå til træner menuen");
 
@@ -75,7 +80,8 @@ public class Main {
         System.out.println("\nØkonomi");
         System.out.println("1. Register træningstid"); //IN PROGRESS
         System.out.println("2. Register konkurrencetid"); //TODO
-        System.out.println("3. Se top 5"); //TODO
+        System.out.println("3. Se junior top 5"); //TODO
+        System.out.println("4. Se senior top 5");
         System.out.println("9. Gå tilbage");
         System.out.print("Vælg en mulighed: ");
         Scanner scanner = new Scanner(System.in);
@@ -85,22 +91,41 @@ public class Main {
                 registerTime(option);
                 break;
             case 3:
-                printTop5times();
+                ArrayList<CompetitionSwimmer> junior = getJuniorCompSwimmers();
+                printTop5times(junior);
+                break;
+            case 4:
+                ArrayList<CompetitionSwimmer> senior = getSeniorCompSwimmers();
+                printTop5times(senior);
+                break;
             case 5:
         }
     }
 
+    private static ArrayList<CompetitionSwimmer> getJuniorCompSwimmers() {//TODO
+        return null;
+    }
+
+
+    private static ArrayList<CompetitionSwimmer> getSeniorCompSwimmers() { //TODO
+        return null;
+    }
+
     private static void printTop5times(ArrayList<CompetitionSwimmer> CompSwimmers) {
-        ArrayList<ArrayList<CompetitionSwimmer>> bestInDis = new ArrayList<>();
+
         for (Discipline dis : Discipline.values()) {
             System.out.println(dis);
             ArrayList<TrainingTime> bestTimeInDis = new ArrayList<>();
-            for (Swimmer cs : CompSwimmers) {
+            for (CompetitionSwimmer cs : CompSwimmers) {
                 if (cs.hasDiscipline(dis)) {
                     bestTimeInDis.add(cs.fastestDisTime(dis));
                 }
             }
-            bestTimeInDis.sort();
+
+            bestTimeInDis.sort(null);
+            for(int i = 0; i < 4; i++) {
+                System.out.println(bestTimeInDis.get(i).toString());
+            }
         }
     }
 
@@ -139,7 +164,7 @@ public class Main {
         System.out.print("Registrert tid i " + dis.toString().toLowerCase() + ": ");
         LocalTime time = readTime();
 
-        return new TrainingTime(time, dis, date, com.getMemberId());
+        return new TrainingTime(com.getMemberId(), time, dis, date);
 
     }
     private static CompetitionTime registerCompetisionTime(CompetitionSwimmer swimmer, TrainingTime tt) {
@@ -156,7 +181,7 @@ public class Main {
             System.out.println("\nØkonomi");
             System.out.println("1. Se medlemers balance");
             System.out.println("2. Se medlemer i restance");
-            System.out.println("3. Se medlems betalinger");
+            System.out.println("3. Se medlems betalinger"); //TODO Nope
             System.out.println("4. Indberet betaling");
             System.out.println("5. Kontigent i alt");
             System.out.println("9. Gå tilbage");

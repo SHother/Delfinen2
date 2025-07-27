@@ -4,17 +4,18 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class TrainingTime implements Comparable<TrainingTime> {
-
+    int memberID;
     LocalTime time;
     LocalDate trainingDate;
     Discipline discipline;
-    int memberID;
 
-    public TrainingTime(LocalTime time, Discipline discipline, LocalDate trainingDate, int memberID) {
+
+    public TrainingTime(int memberID, LocalTime time, Discipline discipline, LocalDate trainingDate) {
+        this.memberID = memberID;
         this.time = time;
         this.discipline = discipline;
         this.trainingDate = trainingDate;
-        this.memberID = memberID;
+
     }
 
     @Override

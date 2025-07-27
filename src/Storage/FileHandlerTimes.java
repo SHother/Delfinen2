@@ -6,11 +6,11 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class FileHandlerPayments {
-    private static final String PAYMENT_FILE = "payments.txt";
+public class FileHandlerTimes {
+    private static final String TIMES_FILE = "times.txt";
 
-    public void savePayments(ArrayList<Payment> payments) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(PAYMENT_FILE))) {
+    public void saveTimes(ArrayList<Payment> payments) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(TIMES_FILE))) {
             for (Payment p : payments) {
                 writer.printf("%s;%s;%.2f%n",
                         p.getMemberId(),
@@ -22,9 +22,9 @@ public class FileHandlerPayments {
         }
     }
 
-    public ArrayList<Payment> loadPayments() {
+    public ArrayList<Payment> loadTimes() {
         ArrayList<Payment> payments = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(PAYMENT_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(TIMES_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(";");

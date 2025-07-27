@@ -8,13 +8,13 @@ public class CompetitionTime extends TrainingTime {
     int placement;
 
     public CompetitionTime(LocalTime time, Discipline discipline, LocalDate trainingDate, int memberID, String competition, int placement) {
-        super(time, discipline, trainingDate, memberID);
+        super(memberID, time, discipline, trainingDate);
         this.competition = competition;
         this.placement = placement;
     }
 
     public CompetitionTime(TrainingTime tt, String competition, int placement) {
-        super(tt.time, tt.discipline, tt.trainingDate, tt.memberID);
+        super(tt.memberID, tt.time, tt.discipline, tt.trainingDate);
         this.competition = competition;
         this.placement = placement;
     }
