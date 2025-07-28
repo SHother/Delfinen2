@@ -6,8 +6,8 @@ import java.time.LocalTime;
 public class TrainingTime implements Comparable<TrainingTime> {
     int memberID;
     LocalTime time;
-    LocalDate trainingDate;
     Discipline discipline;
+    LocalDate trainingDate;
 
 
     public TrainingTime(int memberID, LocalTime time, Discipline discipline, LocalDate trainingDate) {
@@ -26,4 +26,19 @@ public class TrainingTime implements Comparable<TrainingTime> {
     public String toString() {
         return "Tid " + time + ", Dato " + trainingDate;
     }
+
+
+    public int getMemberID() {
+        return memberID;
+    }
+    public LocalTime getTime() {
+        return time;
+    }
+    public LocalDate getTrainingDate() {
+        return trainingDate;
+    }
+    public Discipline getDiscipline() {
+        return discipline;
+    }
+
 }

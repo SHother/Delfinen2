@@ -2,8 +2,9 @@ package Models;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 
-public class Payment {
+public class Payment implements Comparable<Payment> {
     int memberId;
     LocalDate paymentDate;
     double amount;
@@ -19,7 +20,18 @@ public class Payment {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy dd/MM");
         return "Date: " + paymentDate + "\t" + amount + "kr";
     }
+    @Override
+    public int compareTo(Payment o) {
+        return paymentDate.compareTo(o.paymentDate);
+    }
 
+    public static class CompareMemberID implements Comparator<Payment> {
+        public int compare(Payment o1, Payment o2) {
+            return o1.memberId - o2.memberId;
+        }
+    }
+
+    //Getter & Setters
     public LocalDate getPaymentDate() {return paymentDate;}
     public void setPaymentDate(LocalDate paymentDate) {this.paymentDate = paymentDate;}
     public double getAmount() {return amount;}

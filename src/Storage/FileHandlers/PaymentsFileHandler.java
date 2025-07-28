@@ -1,4 +1,4 @@
-package Storage;
+package Storage.FileHandlers;
 
 import Models.Payment;
 
@@ -6,7 +6,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class FileHandlerPayments {
+public class PaymentsFileHandler {
     private static final String PAYMENT_FILE = "payments.txt";
 
     public void savePayments(ArrayList<Payment> payments) {
