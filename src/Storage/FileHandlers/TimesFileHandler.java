@@ -15,37 +15,6 @@ public class TimesFileHandler {
     private static final String TRAINING_TIMES_FILE = "trainingTimes.txt";
     private static final String COMPETITION_TIMES_FILE = "competitionTimes.txt";
 
-
-    public void saveTrainingTimes(ArrayList<TrainingTime> times) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(TRAINING_TIMES_FILE))) {
-            for (TrainingTime t : times) {
-                writer.printf("%s;%s;%s;%sn",
-                        t.getMemberID(),
-                        t.getTime(),
-                        t.getDiscipline(),
-                        t.getTrainingDate());
-            }
-        } catch (IOException e) {
-            System.out.println("Could not save payments: " + e.getMessage());
-        }
-    }
-
-    public void saveCompetitionTimes(ArrayList<CompetitionTime> times) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(TRAINING_TIMES_FILE))) {
-            for (CompetitionTime t : times) {
-                writer.printf("%s;%s;%s;%s;%s;%d%n",
-                        t.getMemberID(),
-                        t.getTime(),
-                        t.getDiscipline(),
-                        t.getTrainingDate(),
-                        t.getCompetition(),
-                        t.getPlacement());
-            }
-        } catch (IOException e) {
-            System.out.println("Could not save payments: " + e.getMessage());
-        }
-    }
-
     public ArrayList<TrainingTime> loadTrainingTimes() {
         ArrayList<TrainingTime> times = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(TRAINING_TIMES_FILE))) {
@@ -63,7 +32,6 @@ public class TimesFileHandler {
         }
         return times;
     }
-
     public ArrayList<CompetitionTime> loadCompetitionTimes() {
         ArrayList<CompetitionTime> times = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(COMPETITION_TIMES_FILE))) {
@@ -83,5 +51,61 @@ public class TimesFileHandler {
             System.out.println("Could not load payments: " + e.getMessage());
         }
         return times;
+    }
+
+    public void addTrainingTime(TrainingTime time) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(TRAINING_TIMES_FILE, true))) {
+            writer.printf("%s;%s;%s;%sn",
+                    time.getMemberID(),
+                    time.getTime(),
+                    time.getDiscipline(),
+                    time.getTrainingDate());
+        } catch (IOException e) {
+            System.out.println("Could not save time: " + e.getMessage());
+        }
+    }
+    public void addCompetitionTimes(CompetitionTime time) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(TRAINING_TIMES_FILE, true))) {
+
+            writer.printf("%s;%s;%s;%s;%s;%d%n",
+                    time.getMemberID(),
+                    time.getTime(),
+                    time.getDiscipline(),
+                    time.getTrainingDate(),
+                    time.getCompetition(),
+                    time.getPlacement());
+
+        } catch (IOException e) {
+            System.out.println("Could not save payments: " + e.getMessage());
+        }
+    }
+
+    public void saveTrainingTimes(ArrayList<TrainingTime> times) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(TRAINING_TIMES_FILE))) {
+            for (TrainingTime t : times) {
+                writer.printf("%s;%s;%s;%sn",
+                        t.getMemberID(),
+                        t.getTime(),
+                        t.getDiscipline(),
+                        t.getTrainingDate());
+            }
+        } catch (IOException e) {
+            System.out.println("Could not save payments: " + e.getMessage());
+        }
+    }
+    public void saveCompetitionTimes(ArrayList<CompetitionTime> times) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(TRAINING_TIMES_FILE))) {
+            for (CompetitionTime t : times) {
+                writer.printf("%s;%s;%s;%s;%s;%d%n",
+                        t.getMemberID(),
+                        t.getTime(),
+                        t.getDiscipline(),
+                        t.getTrainingDate(),
+                        t.getCompetition(),
+                        t.getPlacement());
+            }
+        } catch (IOException e) {
+            System.out.println("Could not save payments: " + e.getMessage());
+        }
     }
 }

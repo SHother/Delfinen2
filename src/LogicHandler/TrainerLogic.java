@@ -13,11 +13,11 @@ public class TrainerLogic {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void trainerMenu(ArrayList<CompetitionSwimmer> swimmers) {
-        System.out.println("\nØkonomi");
-        System.out.println("1. Register træningstid"); //IN PROGRESS
-        System.out.println("2. Register konkurrencetid"); //TODO
-        System.out.println("3. Se junior top 5"); //TODO
-        System.out.println("4. Se senior top 5");
+        System.out.println("\nKonkurrence svømmer menu");
+        System.out.println("1. Register træningstid"); //TODO test'
+        System.out.println("2. Register konkurrencetid"); //TODO test
+        System.out.println("3. Se junior top 5"); //TODO test
+        System.out.println("4. Se senior top 5"); //TODO test
         System.out.println("9. Gå tilbage");
         System.out.print("Vælg en mulighed: ");
         Scanner scanner = new Scanner(System.in);
@@ -27,12 +27,10 @@ public class TrainerLogic {
                 registerTime(swimmers, option);
                 break;
             case 3:
-                ArrayList<CompetitionSwimmer> junior = getJuniorCompSwimmers(swimmers);
-                printTop5times(junior);
+                printTop5times(getJuniorCompSwimmers(swimmers));
                 break;
             case 4:
-                ArrayList<CompetitionSwimmer> senior = getSeniorCompSwimmers(swimmers);
-                printTop5times(senior);
+                printTop5times(getSeniorCompSwimmers(swimmers));
                 break;
             case 9:
                 break;
@@ -40,12 +38,24 @@ public class TrainerLogic {
     }
 
     private static ArrayList<CompetitionSwimmer> getJuniorCompSwimmers(ArrayList<CompetitionSwimmer> swimmers) {//TODO
-        return swimmers;
+        ArrayList<CompetitionSwimmer> youngGuns = new ArrayList<>();
+        for (CompetitionSwimmer swimmer : swimmers) {
+            if (swimmer.getAge() < 18){
+                youngGuns.add(swimmer);
+            }
+        }
+        return youngGuns;
     }
 
 
     private static ArrayList<CompetitionSwimmer> getSeniorCompSwimmers(ArrayList<CompetitionSwimmer> swimmers) { //TODO
-        return swimmers;
+        ArrayList<CompetitionSwimmer> oldGuys = new ArrayList<>();
+        for (CompetitionSwimmer swimmer : swimmers) {
+            if (swimmer.getAge() > 17){
+                oldGuys.add(swimmer);
+            }
+        }
+        return oldGuys;
     }
 
     private static void printTop5times(ArrayList<CompetitionSwimmer> CompSwimmers) {
@@ -95,11 +105,8 @@ public class TrainerLogic {
                 return null;
             }
         }
-        System.out.print("Dato (yyyy-mm-dd): ");
         LocalDate date = readDate(scanner);
-
-        System.out.print("Registrert tid i " + dis.toString().toLowerCase() + ": ");
-        LocalTime time = readTime(scanner);
+        LocalTime time = readTime(scanner, dis);
 
         return new TrainingTime(com.getMemberId(), time, dis, date);
 
@@ -113,7 +120,7 @@ public class TrainerLogic {
     }
 
     public static CompetitionSwimmer findComSwimmerFromId(ArrayList<CompetitionSwimmer> swimmers) {
-        //print comp swimmers
+
         for (Swimmer swimmer : swimmers){
             System.out.println(swimmer.getMemberId() + ") " + swimmer.getName());
         }

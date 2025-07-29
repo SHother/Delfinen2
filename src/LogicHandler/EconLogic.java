@@ -2,6 +2,8 @@ package LogicHandler;
 
 import Models.Payment;
 import Models.Swimmer;
+import Storage.FileHandlers.PaymentsFileHandler;
+import Storage.LocalStorage;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,13 +15,13 @@ public class EconLogic {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    public static void econMenu(ArrayList<Swimmer> swimmers){
+    public static void econMenu(ArrayList<Swimmer> swimmers, LocalStorage localStorage) {
         boolean quit = false;
         do {
             System.out.println("\nØkonomi");
             System.out.println("1. Se medlemers balance");
             System.out.println("2. Se medlemer i restance");
-            System.out.println("3. Se medlems betalinger"); //TODO Nope
+            System.out.println("3. Se medlems betalinger (deaktiveret)"); //TODO Nope
             System.out.println("4. Indberet betaling");
             System.out.println("5. Kontigent i alt");
             System.out.println("9. Gå tilbage");
@@ -33,11 +35,9 @@ public class EconLogic {
                 case 2:
                     membersInMinus(swimmers);
                     break;
-                case 3:
-                    promptMemberPayments();
-                    break;
+
                 case 4:
-                    promptNewPayment(swimmers);
+                    promptNewPayment(swimmers, localStorage);
                     break;
                 case 5:
                     totalContingent(swimmers);
@@ -51,25 +51,20 @@ public class EconLogic {
             }
         } while (!quit);
     }
-    //TODO see a members payments
-    private static void promptMemberPayments() {
 
-    }
-    private static void promptNewPayment(ArrayList<Swimmer> swimmers) {
+    private static void promptNewPayment(ArrayList<Swimmer> swimmers, LocalStorage localStorage) {
         System.out.println("Vælg medlem som har betalt");
 
-        Swimmer m = findMemberFromId(scanner, swimmers);
-        if (m != null) {
-            System.out.print("Dato (yyyy-mm-dd): ");
+        Swimmer swimmer = findMemberFromId(scanner, swimmers);
+        if (swimmer != null) {
             LocalDate date = readDate(scanner);
-            System.out.print("Beløb: ");
-            double amount = Double.parseDouble(scanner.nextLine());
-            createPayment(m, date, amount);
+            double amount = Double.parseDouble(scanner.nextLine()); //TODO check double
+            Payment pay = new Payment (swimmer.getMemberId(), date, amount);
+
+            localStorage.addPayment(pay, swimmer);
         }
     }
-    public static void createPayment(Swimmer swimmer, LocalDate date, double amount){
-        swimmer.createPayment(date, amount);
-    }
+
     private static void membersBalancePrint(ArrayList<Swimmer> swimmers) {
         int i = 1;
         swimmers.sort(new Swimmer.WorstEcon());

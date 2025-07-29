@@ -87,9 +87,7 @@ public class Swimmer implements Comparable<Swimmer> {
         return totalPayments;
     }
 
-    public void addPayment(Payment payment) {
-        payments.add(payment);
-    }
+
 
     public String paymentsToString() {
         StringBuilder paymentsString = new StringBuilder();
@@ -101,10 +99,6 @@ public class Swimmer implements Comparable<Swimmer> {
 
     public int getAge() {
         return Period.between(birthday, LocalDate.now()).getYears();
-    }
-
-    public void createPayment(LocalDate paymentDate, double amount) {
-        payments.add(new Payment(paymentDate, amount, this.memberId));
     }
 
 
@@ -158,18 +152,24 @@ public class Swimmer implements Comparable<Swimmer> {
     public void setName(String name) {
         this.name = name;
     }
+
     public LocalDate getBirthday() {
         return birthday;
     }
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
+
     public ArrayList<Payment> getPayments() {
         return payments;
     }
     public void setPayments(ArrayList<Payment> payments) {
         this.payments = payments;
     }
+    public void addPayment(Payment payment) {
+        payments.add(payment);
+    }
+
     public Boolean isPaymentStatus() {
         return paymentStatus;
 

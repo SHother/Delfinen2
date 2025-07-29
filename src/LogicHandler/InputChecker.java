@@ -11,14 +11,17 @@ import java.util.Scanner;
 public class InputChecker {
     //TODO Throw custom exception
     public static LocalDate readDate(Scanner scanner) {
+        System.out.print("Dato (yyyy-mm-dd): ");
         return LocalDate.parse(scanner.nextLine());
     }
 
     //TODO Throw custom exception
-    public static LocalTime readTime(Scanner scanner){
+    public static LocalTime readTime(Scanner scanner, Discipline dis) {
+        System.out.print("Registrert tid i " + dis.toString().toLowerCase() + ": ");
         return LocalTime.parse(scanner.nextLine());
     }
 
+    //TODO out of bounce
     public static Discipline readDiscipline(Scanner scanner){
         int i = 1;
         for (Discipline dis : Discipline.values()) {
@@ -29,7 +32,7 @@ public class InputChecker {
         return Discipline.values()[readValidInt(scanner)-1];
     }
 
-    //if no int is found, promt the user to give a valid int
+    //if no int is found, prompt the user to give a valid int
     public static int readValidInt(Scanner scanner) {
         while (!scanner.hasNextInt()) {
             System.out.println("Not a valid number. Try again:");
