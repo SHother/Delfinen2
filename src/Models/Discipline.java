@@ -4,5 +4,10 @@ public enum Discipline {
     BUTTERFLY,
     CRAWL,
     BACK,
-    BREAST
+    BREAST;
+
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
+    }
 }

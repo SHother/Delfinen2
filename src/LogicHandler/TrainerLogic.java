@@ -14,10 +14,10 @@ public class TrainerLogic {
 
     public static void trainerMenu(ArrayList<CompetitionSwimmer> swimmers) {
         System.out.println("\nKonkurrence svømmer menu");
-        System.out.println("1. Register træningstid"); //TODO test'
-        System.out.println("2. Register konkurrencetid"); //TODO test
-        System.out.println("3. Se junior top 5"); //TODO test
-        System.out.println("4. Se senior top 5"); //TODO test
+        System.out.println("1. Register træningstid");
+        System.out.println("2. Register konkurrencetid");
+        System.out.println("3. Se junior top 5");
+        System.out.println("4. Se senior top 5");
         System.out.println("9. Gå tilbage");
         System.out.print("Vælg en mulighed: ");
         Scanner scanner = new Scanner(System.in);
@@ -46,8 +46,6 @@ public class TrainerLogic {
         }
         return youngGuns;
     }
-
-
     private static ArrayList<CompetitionSwimmer> getSeniorCompSwimmers(ArrayList<CompetitionSwimmer> swimmers) { //TODO
         ArrayList<CompetitionSwimmer> oldGuys = new ArrayList<>();
         for (CompetitionSwimmer swimmer : swimmers) {
@@ -57,7 +55,6 @@ public class TrainerLogic {
         }
         return oldGuys;
     }
-
     private static void printTop5times(ArrayList<CompetitionSwimmer> CompSwimmers) {
 
         for (Discipline dis : Discipline.values()) {
@@ -68,7 +65,6 @@ public class TrainerLogic {
                     bestTimeInDis.add(cs.fastestDisTime(dis));
                 }
             }
-
             bestTimeInDis.sort(null);
             for(int i = 0; i < 4; i++) {
                 System.out.println(bestTimeInDis.get(i).toString());
@@ -106,7 +102,7 @@ public class TrainerLogic {
             }
         }
         LocalDate date = readDate(scanner);
-        LocalTime time = readTime(scanner, dis);
+        LocalTime time = readTime(scanner);
 
         return new TrainingTime(com.getMemberId(), time, dis, date);
 

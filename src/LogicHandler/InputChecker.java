@@ -16,8 +16,7 @@ public class InputChecker {
     }
 
     //TODO Throw custom exception
-    public static LocalTime readTime(Scanner scanner, Discipline dis) {
-        System.out.print("Registrert tid i " + dis.toString().toLowerCase() + ": ");
+    public static LocalTime readTime(Scanner scanner) {
         return LocalTime.parse(scanner.nextLine());
     }
 
@@ -35,7 +34,7 @@ public class InputChecker {
     //if no int is found, prompt the user to give a valid int
     public static int readValidInt(Scanner scanner) {
         while (!scanner.hasNextInt()) {
-            System.out.println("Not a valid number. Try again:");
+            System.out.println("Inputtet var ikke et heltal, prøv igen!");
             scanner.nextLine();
         }
         int returnVal = scanner.nextInt();
@@ -57,5 +56,6 @@ public class InputChecker {
         System.out.println("Medlem " + option + " kan ikke findes!");
         return null;
     }
+
 
 }

@@ -2,7 +2,6 @@ package LogicHandler;
 
 import Models.Payment;
 import Models.Swimmer;
-import Storage.FileHandlers.PaymentsFileHandler;
 import Storage.LocalStorage;
 
 import java.time.LocalDate;
@@ -13,9 +12,14 @@ import static LogicHandler.InputChecker.*;
 
 public class EconLogic {
 
-    private static final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
+    private LocalStorage localStorage;
 
-    public static void econMenu(ArrayList<Swimmer> swimmers, LocalStorage localStorage) {
+    public EconLogic(LocalStorage localStorage) {
+        this.localStorage = localStorage;
+    }
+
+    public void econMenu() {
         boolean quit = false;
         do {
             System.out.println("\nØkonomi");
@@ -26,36 +30,22 @@ public class EconLogic {
             System.out.println("5. Kontigent i alt");
             System.out.println("9. Gå tilbage");
             System.out.print("Vælg en mulighed: ");
-            Scanner scanner = new Scanner(System.in);
             int option = readValidInt(scanner);
             switch (option) {
-                case 1:
-                    membersBalancePrint(swimmers);
-                    break;
-                case 2:
-                    membersInMinus(swimmers);
-                    break;
-
-                case 4:
-                    promptNewPayment(swimmers, localStorage);
-                    break;
-                case 5:
-                    totalContingent(swimmers);
-                    break;
-                case 9:
-                    quit = true;
-                    break;
-                default:
-                    System.out.println(option + " er ikke en mulighed. Vælg mellem:");
-                    break;
+                case 1-> membersBalancePrint();
+                case 2-> membersInMinus();
+                case 4-> promptNewPayment();
+                case 5-> totalContingent();
+                case 9-> quit = true;
+                default-> System.out.println(option + " er ikke en mulighed. Vælg mellem:");
             }
         } while (!quit);
     }
 
-    private static void promptNewPayment(ArrayList<Swimmer> swimmers, LocalStorage localStorage) {
+    private void promptNewPayment() {
         System.out.println("Vælg medlem som har betalt");
 
-        Swimmer swimmer = findMemberFromId(scanner, swimmers);
+        Swimmer swimmer = findMemberFromId(scanner, localStorage.getAllSwimmers());
         if (swimmer != null) {
             LocalDate date = readDate(scanner);
             double amount = Double.parseDouble(scanner.nextLine()); //TODO check double
@@ -65,27 +55,27 @@ public class EconLogic {
         }
     }
 
-    private static void membersBalancePrint(ArrayList<Swimmer> swimmers) {
+    private void membersBalancePrint() {
         int i = 1;
-        swimmers.sort(new Swimmer.WorstEcon());
-        for (Swimmer swimmer : swimmers) {
+        localStorage.getAllSwimmers().sort(new Swimmer.WorstEcon()); //TODO
+        for (Swimmer swimmer : localStorage.getAllSwimmers()) { //hmmm
             System.out.println(i + ")\t" + swimmer.getName() + "\tbalance: " + swimmer.calMemberBalance());
             i++;
         }
     }
     //TODO
-    private static void membersInMinus(ArrayList<Swimmer> swimmers) {
+    private void membersInMinus() {
         double balance;
-        for (Swimmer swimmer : swimmers) {
+        for (Swimmer swimmer : localStorage.getAllSwimmers()) {
             balance = swimmer.calMemberBalance();
             if (balance < 0) {
                 System.out.println(swimmer.getName() + "\tbalance: " + swimmer.calMemberBalance());
             }
         }
     }
-    private static void totalContingent(ArrayList<Swimmer> swimmers) {
+    private void totalContingent() {
         double total = 0;
-        for (Swimmer swimmer : swimmers) {
+        for (Swimmer swimmer : localStorage.getAllSwimmers()) {
             total += swimmer.getQuota();
         }
         System.out.println(total);

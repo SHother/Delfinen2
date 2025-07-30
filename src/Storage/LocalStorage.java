@@ -96,4 +96,10 @@ public class LocalStorage {
     public ArrayList<TrainingTime> getTimes() {
         return times;
     }
+
+    public void addDisciplineToSwimmer(CompetitionSwimmer swimmer, Discipline dis) { //TODO
+    }
+
+    public void addTimeToSwimmer(CompetitionSwimmer swimmer, TrainingTime tt) { //TODO
+    }
 }
