@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>Main</OriginalElement>
+  <nodes>
+    <node x="631.7322734547424" y="1685.2631772113941">Application</node>
+    <node x="616.8652570242392" y="428.0">Models.CompetitionSwimmer</node>
+    <node x="-32.39488816444782" y="1954.604688935532">LogicHandler.EconLogic</node>
+    <node x="1043.6760382084278" y="1121.863892053973">Models.CompetitionTime</node>
+    <node x="573.0646874877259" y="2496.965054704647">UI.MenuI</node>
+    <node x="2091.1337004497755" y="1563.856102428786">Storage.FileHandlers.SwimmersFileHandler</node>
+    <node x="426.7061440101045" y="730.7632419790103">Models.Trainer</node>
+    <node x="644.7322734547424" y="1571.5134133733131">Main</node>
+    <node x="-363.4604668725283" y="428.0">Models.Payment</node>
+    <node x="707.3652570242392" y="1025.863892053973">Models.TrainingTime</node>
+    <node x="1133.323286686691" y="841.7944862368815">Models.Discipline</node>
+    <node x="266.4222704562418" y="1954.604688935532">LogicHandler.AdminHelper</node>
+    <node x="2091.1337004497755" y="1864.2735740929538">Storage.FileHandlers.TimesFileHandler</node>
+    <node x="2091.1337004497755" y="2156.6910457571216">Storage.FileHandlers.PaymentsFileHandler</node>
+    <node x="859.6563442193601" y="2503.472906026986">UI.TrainerMenu</node>
+    <node x="589.2394290769314" y="1954.604688935532">LogicHandler.TrainerHelper</node>
+    <node x="1330.1141150619374" y="1725.6910457571216">Storage.LocalStorage</node>
+    <node x="93.82282110091751" y="428.0">Models.Swimmer</node>
+    <node x="140.0220269779809" y="2504.472906026986">UI.AdminMenu</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Storage.LocalStorage" target="Models.Trainer" relationship="TO_MANY">
+      <point x="-160.04577615938865" y="-277.5808202458775" />
+      <point x="1393.5683389025487" y="1546.7901926236882" />
+      <point x="479.7061440101045" y="1546.7901926236882" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="LogicHandler.TrainerHelper" target="Models.CompetitionTime" relationship="CREATE">
+      <point x="240.7605709230686" y="-116.5" />
+      <point x="-64.17603820842783" y="84.5159395694152" />
+    </edge>
+    <edge source="Models.TrainingTime" target="Models.Discipline" relationship="TO_ONE">
+      <point x="30.0" y="-140.5" />
+      <point x="851.8652570242392" y="982.1943947706147" />
+      <point x="-93.02622838384241" y="35.899908533733196" />
+    </edge>
+    <edge source="Storage.LocalStorage" target="Storage.FileHandlers.SwimmersFileHandler" relationship="TO_ONE">
+      <point x="223.5" y="-276.5" />
+      <point x="-232.5" y="48.83494332833561" />
+    </edge>
+    <edge source="Models.CompetitionSwimmer" target="Models.TrainingTime" relationship="CREATE">
+      <point x="-91.64512182783744" y="191.73931624587703" />
+      <point x="724.4299344407797" y="820.239316245877" />
+      <point x="-97.43532258345954" y="-135.90473878260855" />
+    </edge>
+    <edge source="Storage.LocalStorage" target="Storage.FileHandlers.PaymentsFileHandler" relationship="CREATE">
+      <point x="223.5" y="215.5" />
+      <point x="-154.0" y="0.0" />
+    </edge>
+    <edge source="UI.TrainerMenu" target="UI.MenuI" relationship="REALIZATION">
+      <point x="-203.82740437082077" y="37.80181395996533" />
+      <point x="833.328" y="2682.7747199869514" />
+      <point x="833.328" y="2682.739637251742" />
+      <point x="663.5646874877259" y="2682.739637251742" />
+      <point x="663.5646874877259" y="2653.246686866567" />
+      <point x="663.4569923081976" y="2653.246686866567" />
+      <point x="-0.1076951795282639" y="57.37157901203136" />
+    </edge>
+    <edge source="Application" target="LogicHandler.AdminHelper" relationship="CREATE">
+      <point x="-90.5" y="0.0" />
+      <point x="385.3228211009175" y="1741.7631772113941" />
+      <point x="-5.599449355324282" y="-68.5" />
+    </edge>
+    <edge source="LogicHandler.EconLogic" target="Storage.LocalStorage" relationship="TO_ONE">
+      <point x="0.0" y="104.5" />
+      <point x="80.10511183555218" y="2249.8266746626687" />
+      <point x="-214.63955722085848" y="240.13562890554704" />
+    </edge>
+    <edge source="Storage.FileHandlers.TimesFileHandler" target="Models.TrainingTime" relationship="CREATE">
+      <point x="-199.8447612713644" y="-92.40613085457244" />
+      <point x="1939.5352043093135" y="1888.3674432383814" />
+      <point x="1939.5352043093135" y="1104.363892053973" />
+      <point x="114.5" y="-62.0" />
+    </edge>
+    <edge source="LogicHandler.TrainerHelper" target="UI.TrainerMenu" relationship="CREATE">
+      <point x="242.9169151424287" y="116.5" />
+      <point x="15.0" y="-141.5" />
+    </edge>
+    <edge source="Models.CompetitionSwimmer" target="Models.TrainingTime" relationship="TO_MANY">
+      <point x="-72.3392184275375" y="197.1020671904048" />
+      <point x="-73.8392184275375" y="-131.61453802698634" />
+    </edge>
+    <edge source="Models.Swimmer" target="Models.Payment" relationship="TO_MANY">
+      <point x="-149.5" y="-387.0" />
+      <point x="127.0" y="-15.0" />
+    </edge>
+    <edge source="Models.CompetitionSwimmer" target="Models.Discipline" relationship="TO_MANY">
+      <point x="203.68838323300758" y="142.97507059142401" />
+      <point x="1154.0560308002962" y="771.475070591424" />
+      <point x="1154.0560308002962" y="861.534684977511" />
+      <point x="-7.305496941563888" y="-84.75980125937053" />
+    </edge>
+    <edge source="Storage.FileHandlers.TimesFileHandler" target="Models.CompetitionTime" relationship="CREATE">
+      <point x="-181.41030489955028" y="-62.240656791604124" />
+      <point x="1901.6139727136435" y="1918.5329173013497" />
+      <point x="1901.6139727136435" y="1214.363892053973" />
+      <point x="111.5" y="0.0" />
+    </edge>
+    <edge source="Storage.LocalStorage" target="Models.Swimmer" relationship="TO_MANY">
+      <point x="174.00682992647899" y="-279.8396533558125" />
+      <point x="1727.6209449884163" y="1641.4495112912027" />
+      <point x="1727.9837563140961" y="1641.4495112912027" />
+      <point x="1727.9837563140961" y="356.3995279525038" />
+      <point x="273.15673220029805" y="356.3995279525038" />
+      <point x="29.833911099380543" y="-522.5528273655184" />
+    </edge>
+    <edge source="LogicHandler.AdminHelper" target="Models.CompetitionSwimmer" relationship="CREATE">
+      <point x="124.49972954375824" y="-14.999688935532049" />
+      <point x="563.0" y="2008.105" />
+      <point x="563.0" y="628.5" />
+      <point x="-203.5002570242392" y="0.0" />
+    </edge>
+    <edge source="Application" target="Storage.LocalStorage" relationship="CREATE">
+      <point x="90.5" y="0.0" />
+      <point x="1069.4121626541419" y="1741.7631772113941" />
+      <point x="1069.4121626541419" y="1782.1910457571216" />
+      <point x="-223.5" y="-227.5" />
+    </edge>
+    <edge source="LogicHandler.EconLogic" target="Models.Payment" relationship="CREATE">
+      <point x="-15.0" y="-104.5" />
+      <point x="65.10511183555218" y="580.5" />
+      <point x="127.0" y="0.0" />
+    </edge>
+    <edge source="Storage.LocalStorage" target="Models.CompetitionSwimmer" relationship="TO_MANY">
+      <point x="-15.0" y="-284.0" />
+      <point x="1538.6141150619374" y="628.5" />
+      <point x="203.5" y="0.0" />
+    </edge>
+    <edge source="LogicHandler.TrainerHelper" target="UI.TrainerMenu" relationship="TO_ONE">
+      <point x="227.9169151424287" y="116.5" />
+      <point x="0.0" y="-141.5" />
+    </edge>
+    <edge source="LogicHandler.TrainerHelper" target="Storage.LocalStorage" relationship="TO_ONE">
+      <point x="261.0" y="-61.41364317841044" />
+      <point x="-223.5" y="0.0" />
+    </edge>
+    <edge source="Storage.LocalStorage" target="Storage.FileHandlers.SwimmersFileHandler" relationship="CREATE">
+      <point x="223.5" y="-261.5" />
+      <point x="-232.5" y="63.83494332833561" />
+    </edge>
+    <edge source="LogicHandler.AdminHelper" target="Models.Swimmer" relationship="CREATE">
+      <point x="-69.9652704562418" y="-68.49968893553205" />
+      <point x="320.957" y="1505.0" />
+      <point x="320.88769631184425" y="1505.0" />
+      <point x="77.56487521092674" y="526.4856887556223" />
+    </edge>
+    <edge source="Storage.LocalStorage" target="Models.Trainer" relationship="CREATE">
+      <point x="-126.79672030331653" y="-264.71021797901085" />
+      <point x="1426.8173947586208" y="1505.0" />
+      <point x="506.2039738116217" y="1505.0" />
+      <point x="26.49782980151724" y="5.014138290854589" />
+    </edge>
+    <edge source="Storage.LocalStorage" target="Storage.FileHandlers.TimesFileHandler" relationship="CREATE">
+      <point x="223.5" y="0.0" />
+      <point x="-206.0" y="28.917471664167806" />
+    </edge>
+    <edge source="Storage.FileHandlers.SwimmersFileHandler" target="Models.CompetitionSwimmer" relationship="CREATE">
+      <point x="-135.66688659334432" y="-106.79418626686743" />
+      <point x="2187.966813856431" y="613.5" />
+      <point x="203.5" y="-15.0" />
+    </edge>
+    <edge source="Models.CompetitionSwimmer" target="Models.Swimmer" relationship="GENERALIZATION">
+      <point x="-203.5" y="-15.0" />
+      <point x="479.7061440101045" y="613.5" />
+      <point x="479.7061440101045" y="678.3706194449655" />
+      <point x="143.10853221352926" y="-274.12938055503446" />
+    </edge>
+    <edge source="Storage.FileHandlers.SwimmersFileHandler" target="Models.Swimmer" relationship="CREATE">
+      <point x="-85.1147365397319" y="-93.01281477661269" />
+      <point x="2238.5189639100436" y="331.35462818926544" />
+      <point x="250.38864150644503" y="331.35462818926544" />
+      <point x="7.065820405527518" y="-523.8177212929546" />
+    </edge>
+    <edge source="Application" target="Storage.LocalStorage" relationship="TO_ONE">
+      <point x="90.5" y="15.0" />
+      <point x="1053.3239098205586" y="1756.7631772113941" />
+      <point x="1053.3239098205586" y="1797.1910457571216" />
+      <point x="-223.5" y="-212.5" />
+    </edge>
+    <edge source="Models.CompetitionTime" target="Models.TrainingTime" relationship="GENERALIZATION">
+      <point x="-111.5" y="0.0" />
+      <point x="114.5" y="48.0" />
+    </edge>
+    <edge source="Main" target="Application" relationship="CREATE">
+      <point x="-6.5" y="31.5" />
+      <point x="0.0" y="-56.5" />
+    </edge>
+    <edge source="Application" target="LogicHandler.EconLogic" relationship="CREATE">
+      <point x="-90.5" y="-15.0" />
+      <point x="80.10511183555218" y="1726.7631772113941" />
+      <point x="0.0" y="-104.5" />
+    </edge>
+    <edge source="LogicHandler.AdminHelper" target="Storage.LocalStorage" relationship="TO_ONE">
+      <point x="42.458965933562695" y="67.12488770014988" />
+      <point x="433.3812363898045" y="2227.0349831484255" />
+      <point x="-225.365059109914" y="217.34393739130383" />
+    </edge>
+    <edge source="LogicHandler.AdminHelper" target="UI.AdminMenu" relationship="TO_ONE">
+      <point x="-97.9002434782609" y="68.5" />
+      <point x="0.0" y="-140.5" />
+    </edge>
+    <edge source="Application" target="LogicHandler.TrainerHelper" relationship="CREATE">
+      <point x="0.0" y="56.5" />
+      <point x="-128.00715562218898" y="-116.5" />
+    </edge>
+    <edge source="LogicHandler.AdminHelper" target="UI.AdminMenu" relationship="CREATE">
+      <point x="0.0" y="68.5" />
+      <point x="97.9002434782609" y="-140.5" />
+    </edge>
+    <edge source="UI.MenuI" target="Storage.LocalStorage" relationship="TO_ONE">
+      <point x="0.0" y="-56.5" />
+      <point x="663.5646874877259" y="2275.2997416491753" />
+      <point x="-225.365059109914" y="265.6086958920537" />
+    </edge>
+    <edge source="Storage.FileHandlers.PaymentsFileHandler" target="Models.Payment" relationship="CREATE">
+      <point x="136.42682158833986" y="0.2443662722848785" />
+      <point x="2394.5130358550628" y="2225.4354120294065" />
+      <point x="2394.5130358550628" y="2225.1910457571216" />
+      <point x="2754.8242947466592" y="2225.1910457571216" />
+      <point x="2754.8242947466592" y="261.21281352923563" />
+      <point x="-237.61960086836575" y="261.21281352923563" />
+      <point x="-1.1591339958374647" y="-144.92444045817103" />
+    </edge>
+    <edge source="Storage.LocalStorage" target="Storage.FileHandlers.PaymentsFileHandler" relationship="TO_ONE">
+      <point x="216.18683114399914" y="196.67878928311802" />
+      <point x="-152.70965742105045" y="-18.82121071688198" />
+    </edge>
+    <edge source="Models.Trainer" target="Models.Swimmer" relationship="GENERALIZATION">
+      <point x="-2.4048109486349176" y="-3.4344127232383244" />
+      <point x="479.7061440101045" y="741.328829255772" />
+      <point x="479.7061440101045" y="678.084132883958" />
+      <point x="150.49551274975744" y="-274.415867116042" />
+    </edge>
+    <edge source="Storage.LocalStorage" target="Models.Payment" relationship="TO_MANY">
+      <point x="128.16927667131586" y="-274.06332099550264" />
+      <point x="1681.7833917332532" y="300.2069404017998" />
+      <point x="-175.63979842398794" y="300.2069404017998" />
+      <point x="60.820668448540346" y="-142.39465260329848" />
+    </edge>
+    <edge source="Storage.LocalStorage" target="Models.TrainingTime" relationship="TO_MANY">
+      <point x="-89.25746369162243" y="-267.9278685457275" />
+      <point x="1447.4639858950527" y="1741.7631772113941" />
+      <point x="1447.4639858950527" y="1460.8159288035974" />
+      <point x="885.6790027706147" y="1460.8159288035974" />
+      <point x="63.8137457463755" y="138.202595742129" />
+    </edge>
+    <edge source="Storage.LocalStorage" target="Storage.FileHandlers.TimesFileHandler" relationship="TO_ONE">
+      <point x="223.5" y="-28.917471664167806" />
+      <point x="-206.0" y="0.0" />
+    </edge>
+    <edge source="UI.AdminMenu" target="UI.MenuI" relationship="REALIZATION">
+      <point x="140.3429184046875" y="31.76121129604917" />
+      <point x="439.3289327325935" y="2676.734117323035" />
+      <point x="439.3289327325935" y="2680.171952099502" />
+      <point x="662.6332737631184" y="2680.171952099502" />
+      <point x="-0.9314137246075234" y="42.36161995802149" />
+    </edge>
+    <edge source="LogicHandler.TrainerHelper" target="Models.TrainingTime" relationship="CREATE">
+      <point x="54.209201999530364" y="-118.26569067466244" />
+      <point x="904.4486310764618" y="1631.1921328935532" />
+      <point x="865.239" y="1631.1921328935532" />
+      <point x="43.37374297576082" y="140.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.3238216194382309" showDependencies="true" x="1273.994686656668" y="1505.8726596701626" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
