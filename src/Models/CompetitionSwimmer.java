@@ -50,8 +50,6 @@ public class CompetitionSwimmer extends Swimmer {
         return timesInDis.getFirst();
     }
 
-
-
     public static class bestTimeInDis implements Comparator<CompetitionSwimmer>{
         private final Discipline discipline;
         public bestTimeInDis(Discipline discipline) {
@@ -66,7 +64,6 @@ public class CompetitionSwimmer extends Swimmer {
             return best1.compareTo(best2);
         }
     }
-
 
     //Setters & getters
     public void setSwimTimes(ArrayList<TrainingTime> swimTimes) {this.swimTimes = swimTimes;}

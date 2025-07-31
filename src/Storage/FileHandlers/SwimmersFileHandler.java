@@ -6,6 +6,7 @@ import Models.Swimmer;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,27 +48,35 @@ public class SwimmersFileHandler {
             String line;
             int highetsId = 0;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(";");
-                String name = parts[0];
-                LocalDate birthday = LocalDate.parse(parts[1]);
-                boolean membership = Boolean.parseBoolean(parts[2]);
-                LocalDate joinedDate = LocalDate.parse(parts[3]);
-                int id = Integer.parseInt(parts[4]);
-                int trainerId = Integer.parseInt(parts[5]);
+                try {
+                    String[] parts = line.split(";");
+                    String name = parts[0];
+                    LocalDate birthday = LocalDate.parse(parts[1]);
+                    boolean membership = Boolean.parseBoolean(parts[2]);
+                    LocalDate joinedDate = LocalDate.parse(parts[3]);
+                    int id = Integer.parseInt(parts[4]);
+                    int trainerId = Integer.parseInt(parts[5]);
 
-                String[] strDisciplines = parts[6].split(",");
-                Set<Discipline> disciplines = new HashSet<>();
-                for (String strDiscipline : strDisciplines) {
-                    disciplines.add(stringToDiscipline(strDiscipline));
+                    String[] strDisciplines = parts[6].split(",");
+                    Set<Discipline> disciplines = new HashSet<>();
+                    for (String strDiscipline : strDisciplines) {
+                        disciplines.add(stringToDiscipline(strDiscipline));
+                    }
+
+                    if (id > highetsId) highetsId = id;
+                    swimmers.add(new CompetitionSwimmer(name, birthday, membership, joinedDate, id, trainerId, disciplines));
+                } catch (DateTimeParseException | NullPointerException e){
+                    System.out.println("Fejl i dato" + e.getMessage());
+                } catch (NumberFormatException e) {
+                    System.out.println("Fejl i Id" + e.getMessage());
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println(e.getMessage());
                 }
-
-                if (id > highetsId) highetsId = id;
-                swimmers.add(new CompetitionSwimmer(name, birthday, membership, joinedDate, id, trainerId, disciplines));
             }
             if (highetsId > Swimmer.getMemberIdCounter()) Swimmer.setMemberIdCounter(highetsId);
 
         } catch (IOException e) {
-            System.out.println("Could not load members: " + e.getMessage());
+            System.out.println("Fejl ved indlæsning af svømmere" + e.getMessage());
         }
         return swimmers;
     }
@@ -92,7 +101,7 @@ public class SwimmersFileHandler {
                 disciplineList.append(d.name()).append(",");
             }
             if (!swimmer.getDisciplines().isEmpty()) {
-                disciplineList.setLength(disciplineList.length() - 1); // Remove trailing comma
+                disciplineList.setLength(disciplineList.length() - 1);
             }
 
             writer.printf("%s;%s;%b;%s;%d;%d;%s%n",
@@ -101,7 +110,7 @@ public class SwimmersFileHandler {
                     swimmer.isMembership(),
                     swimmer.getJoinedDate(),
                     swimmer.getMemberId(),
-                    swimmer.getTrainerID(), // Assuming trainer is stored as ID
+                    swimmer.getTrainerID(),
                     disciplineList);
         } catch (IOException e) {
             System.out.println("Could not append competition swimmer: " + e.getMessage());

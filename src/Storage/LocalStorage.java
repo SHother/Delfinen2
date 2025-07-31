@@ -19,16 +19,23 @@ public class LocalStorage {
     private ArrayList<TrainingTime> times = new ArrayList<>();
 
     public LocalStorage() {
+        System.out.println("Loading...");
         readFileToLocalStorage();
+        System.out.println("joining Times");
         addTimesToMember();
+        System.out.println("joining Payments");
         addPaymentsToMember();
     }
 
     private void readFileToLocalStorage(){
+        System.out.println("Loading Swimmers...");
         allSwimmers = s_fh.loadChillSwimmers();
+        System.out.println("Loading Comp Swimmers...");
         competitionSwimmers = s_fh.loadCompetitionSwimmers();
         allSwimmers.addAll(competitionSwimmers);
+        System.out.println("Loading Payments...");
         payments = p_fh.loadPayments();
+        System.out.println("Loading Times...");
         times = t_fh.loadTrainingTimes();
         times.addAll(t_fh.loadCompetitionTimes());
         trainers = createTestTrainers();
@@ -100,6 +107,6 @@ public class LocalStorage {
     public void addDisciplineToSwimmer(CompetitionSwimmer swimmer, Discipline dis) { //TODO
     }
 
-    public void addTimeToSwimmer(CompetitionSwimmer swimmer, TrainingTime tt) { //TODO
+    public void addTimeToSwimmer(CompetitionSwimmer swimmer, TrainingTime tt) { //TODO½
     }
 }

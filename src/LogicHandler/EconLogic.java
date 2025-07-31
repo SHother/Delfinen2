@@ -46,30 +46,31 @@ public class EconLogic {
         System.out.println("Vælg medlem som har betalt");
 
         Swimmer swimmer = findMemberFromId(scanner, localStorage.getAllSwimmers());
-        if (swimmer != null) {
-            LocalDate date = readDate(scanner);
-            double amount = Double.parseDouble(scanner.nextLine()); //TODO check double
-            Payment pay = new Payment (swimmer.getMemberId(), date, amount);
+        if (swimmer == null) return;
 
-            localStorage.addPayment(pay, swimmer);
-        }
+        LocalDate date = readDate(scanner);
+        System.out.print("Indtast beløb: ");
+        double amount = readValidDouble(scanner);
+        Payment pay = new Payment (swimmer.getMemberId(), date, amount);
+        localStorage.addPayment(pay, swimmer);
     }
 
     private void membersBalancePrint() {
         int i = 1;
         localStorage.getAllSwimmers().sort(new Swimmer.WorstEcon()); //TODO
-        for (Swimmer swimmer : localStorage.getAllSwimmers()) { //hmmm
-            System.out.println(i + ")\t" + swimmer.getName() + "\tbalance: " + swimmer.calMemberBalance());
-            i++;
+        System.out.printf("%-3s %-20s %10s%n", "Id", "Navn", "Saldo");
+        for (Swimmer swimmer : localStorage.getAllSwimmers()) {
+            System.out.printf("%-3d %-20s %10.2f%n", swimmer.getMemberId(), swimmer.getName(), swimmer.calMemberBalance());
         }
     }
-    //TODO
+
     private void membersInMinus() {
         double balance;
+        System.out.printf("%-3s %-20s %10s%n", "Id", "Navn", "Saldo");
         for (Swimmer swimmer : localStorage.getAllSwimmers()) {
             balance = swimmer.calMemberBalance();
             if (balance < 0) {
-                System.out.println(swimmer.getName() + "\tbalance: " + swimmer.calMemberBalance());
+                System.out.printf("%-3d %-20s %10.2f%n", swimmer.getMemberId(), swimmer.getName(), swimmer.calMemberBalance());
             }
         }
     }

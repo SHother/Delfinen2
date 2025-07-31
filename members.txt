@@ -1,6 +1,0 @@
-Alice Andersen;2008-05-12;true;2023-08-15;1
-Bob Bentsen;1970-02-20;true;2022-03-10;2
-Clara Clausen;1955-11-05;true;2021-01-01;3
-David Dahl;2010-07-30;true;2024-04-01;5
-Erik Eriksen;1985-09-17;false;2023-09-05;4
-Søren Sørensen;1996-04-10;true;2004-10-10;7

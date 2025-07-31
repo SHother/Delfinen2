@@ -5,19 +5,60 @@ import Models.Swimmer;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class InputChecker {
-    //TODO Throw custom exception
+
     public static LocalDate readDate(Scanner scanner) {
-        System.out.print("Dato (yyyy-mm-dd): ");
-        return LocalDate.parse(scanner.nextLine());
+
+        String input;
+        do {
+            System.out.print("Dato (dd-mm-yyyy): ");
+            input = scanner.nextLine();
+        }
+        while (!isValidDate(input));
+        return LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+    }
+    //checker først for regex efterfulgt af parse til Date
+    public static boolean isValidDate(String input) {
+        String regex = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(19\\d{2}|20\\d{2})$";
+        if (!input.matches(regex)) return false;
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate.parse(input, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 
-    //TODO Throw custom exception
     public static LocalTime readTime(Scanner scanner) {
-        return LocalTime.parse(scanner.nextLine());
+        String input;
+        do {
+            System.out.print("Tid (mm:ss): ");
+            input = scanner.nextLine();
+        }
+        while (!isValidTimeFormat(input));
+        return LocalTime.parse(input, DateTimeFormatter.ofPattern("mm:ss"));
+
+    }
+    // fungere på samme måde som isValidDate
+    public static boolean isValidTimeFormat(String input) {
+        String regex = "^([0-5][0-9]):([0-5][0-9])$";
+        if (!input.matches(regex)) return false;
+
+        try {
+            // Use pattern with minute and second only
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm:ss");
+            LocalTime.parse(input, formatter); // throws if invalid
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 
     //TODO out of bounce
@@ -42,9 +83,21 @@ public class InputChecker {
         return returnVal;
     }
 
+    public static double readValidDouble(Scanner scanner) {
+        while (!scanner.hasNextDouble()) {
+            System.out.println("Inputtet kan ikke læsses som et tal, prøv igen!");
+            scanner.nextLine();
+        }
+        double returnVal = scanner.nextDouble();
+        scanner.nextLine();
+        return returnVal;
+    }
+
     public static Swimmer findMemberFromId(Scanner scanner, ArrayList<Swimmer> swimmers) {
+        System.out.println();
+        System.out.printf("%-3s %3s%n", "Id", "Navn");
         for (Swimmer swimmer : swimmers){
-            System.out.println(swimmer.getMemberId() + ") " + swimmer.getName());
+            System.out.printf("%-3d %3s%n", swimmer.getMemberId(), swimmer.getName());
         }
         System.out.print("Skriv Id'et på medlem: ");
         int option = readValidInt(scanner);
@@ -56,6 +109,4 @@ public class InputChecker {
         System.out.println("Medlem " + option + " kan ikke findes!");
         return null;
     }
-
-
 }

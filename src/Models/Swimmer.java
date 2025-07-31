@@ -8,9 +8,9 @@ import java.util.List;
 
 public class Swimmer implements Comparable<Swimmer> {
 
-    static int passiveMembershipCost = 500;
-    static int youthMembershipCost = 1000;
-    static int seniorMembershipCost = 1600;
+    static double passiveMembershipCost = 500;
+    static double youthMembershipCost = 1000;
+    static double seniorMembershipCost = 1600;
     static double seniorMembershipDiscount = 0.25;
 
     static int memberIdCounter;
@@ -28,15 +28,15 @@ public class Swimmer implements Comparable<Swimmer> {
     public double calQuota() {
         double quota = passiveMembershipCost;
         if (membership) {
-            if (this.getAge() < 19) {
+            if (this.getAge() < 18)
                 quota = youthMembershipCost;
-            } else {
-                quota = seniorMembershipCost;
-            }
 
-        }
-        if (this.getAge() >= 60) {
-            quota *= 1.0 - seniorMembershipDiscount;
+             else
+                 quota = seniorMembershipCost;
+
+            if (this.getAge() >= 60)
+                quota *= 1.0 - seniorMembershipDiscount;
+
         }
         return quota;
     }
@@ -45,13 +45,20 @@ public class Swimmer implements Comparable<Swimmer> {
         return Period.between(joinedDate, LocalDate.now()).getYears();
     }
 
-    // assumes that the member has been active in all their time
+    //assumes that the member has been active in all their time
+    //fandt ud af at det overhovedet ikke virker, derfor har vi if-statements
+    //top 3 dårligste metode
     public double calTotalQuota() {
+        int yearsAsMember = membershipYears();
 
         int yearsAsSenior = 0;
         if (getAge() > 59) {
             yearsAsSenior = getAge() - 60;
+            if (yearsAsSenior >= yearsAsMember) return (yearsAsMember + 1) * calQuota();
         }
+
+        if (getAge() < 18) return (yearsAsMember + 1) * calQuota();
+
         int yearsAsMemberUnder18 = 18 - ageAtJoinedDate();
         if (yearsAsMemberUnder18 < 0) {
             yearsAsMemberUnder18 = 0;
@@ -159,7 +166,6 @@ public class Swimmer implements Comparable<Swimmer> {
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
-
     public ArrayList<Payment> getPayments() {
         return payments;
     }
@@ -169,10 +175,12 @@ public class Swimmer implements Comparable<Swimmer> {
     public void addPayment(Payment payment) {
         payments.add(payment);
     }
+    public void addPayment(double amount) {
+        this.addPayment(new Payment(this.memberId, LocalDate.now(), amount));
+    }
 
     public Boolean isPaymentStatus() {
         return paymentStatus;
-
     }
     public void setPaymentStatus(Boolean paymentStatus) {
         this.paymentStatus = paymentStatus;
