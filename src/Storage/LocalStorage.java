@@ -78,9 +78,9 @@ public class LocalStorage {
          if(swimmer instanceof CompetitionSwimmer){
              competitionSwimmers.add((CompetitionSwimmer) swimmer);
              s_fh.addCompetitionSwimmer((CompetitionSwimmer) swimmer);
-         } else {
+         } else
              s_fh.addChillSwimmer(swimmer);
-         }
+
     }
     public void addPayment(Payment payment, Swimmer swimmer) {
         payments.add(payment);
@@ -104,9 +104,15 @@ public class LocalStorage {
         return times;
     }
 
-    public void addDisciplineToSwimmer(CompetitionSwimmer swimmer, Discipline dis) { //TODO
+
+    public void addDisciplineToSwimmer(CompetitionSwimmer swimmer, Discipline dis) {
+    swimmer.addDiscipline(dis);
+    //s_fh.updateSwimmer(swimmer) //TODO ..
     }
 
-    public void addTimeToSwimmer(CompetitionSwimmer swimmer, TrainingTime tt) { //TODO½
+    public void addTimeToSwimmer(CompetitionSwimmer swimmer, TrainingTime tt) {
+        swimmer.addRecordTime(tt);
+        if(tt instanceof CompetitionTime) t_fh.addCompetitionTimes((CompetitionTime) tt);
+        else t_fh.addTrainingTime(tt);
     }
 }

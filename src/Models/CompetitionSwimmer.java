@@ -47,7 +47,11 @@ public class CompetitionSwimmer extends Swimmer {
     public TrainingTime fastestDisTime(Discipline discipline) {
         ArrayList<TrainingTime> timesInDis = getTimesInDiscipline(discipline);
         timesInDis.sort(null);
-        return timesInDis.getFirst();
+        try {
+            return timesInDis.getFirst();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static class bestTimeInDis implements Comparator<CompetitionSwimmer>{

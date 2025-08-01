@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class PaymentsFileHandler {
-    private static final String PAYMENT_FILE = "payments.txt";
+    private static final String PAYMENT_FILE = "src/Storage/Database/payments.txt";
 
     //load all payments
     public ArrayList<Payment> loadPayments() {

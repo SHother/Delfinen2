@@ -9,21 +9,23 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import static Models.DisciplineConverter.stringToDiscipline;
-
 public class TimesFileHandler {
-    private static final String TRAINING_TIMES_FILE = "trainingTimes.txt";
-    private static final String COMPETITION_TIMES_FILE = "competitionTimes.txt";
+    private static final String PATH = "src/Storage/Database/";
+    private static final String TRAINING_TIMES = "trainingTimes.txt";
+    private static final String COMPETITION_TIMES = "competitionTimes.txt";
 
-    public ArrayList<TrainingTime> loadTrainingTimes() {
+    private static final String TRAINING_TIMES_FILE = PATH + TRAINING_TIMES;
+    private static final String COMPETITION_TIMES_FILE = PATH + COMPETITION_TIMES;
+
+    public ArrayList<TrainingTime> loadTrainingTimes(){
         ArrayList<TrainingTime> times = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(TRAINING_TIMES_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(";");
+                String[] parts = line.split("\t");
                 int memberId = Integer.parseInt(parts[0]);
                 LocalTime time = LocalTime.parse(parts[1]);
-                Discipline dis = stringToDiscipline(parts[2]);
+                Discipline dis = Discipline.stringToDiscipline(parts[2]);
                 LocalDate trainingDate = LocalDate.parse(parts[3]);
                 times.add(new TrainingTime(memberId, time, dis, trainingDate ));
             }
@@ -37,10 +39,10 @@ public class TimesFileHandler {
         try (BufferedReader reader = new BufferedReader(new FileReader(COMPETITION_TIMES_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(";");
+                String[] parts = line.split("\t");
                 int memberId = Integer.parseInt(parts[0]);
                 LocalTime time = LocalTime.parse(parts[1]);
-                Discipline dis = stringToDiscipline(parts[2]);
+                Discipline dis = Discipline.stringToDiscipline(parts[2]);
                 LocalDate trainingDate = LocalDate.parse(parts[3]);
                 String competition = parts[4];
                 int placement = Integer.parseInt(parts[5]);
@@ -55,7 +57,7 @@ public class TimesFileHandler {
 
     public void addTrainingTime(TrainingTime time) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(TRAINING_TIMES_FILE, true))) {
-            writer.printf("%s;%s;%s;%sn",
+            writer.printf("%s\t%s\t%s\t%sn",
                     time.getMemberID(),
                     time.getTime(),
                     time.getDiscipline(),
@@ -65,9 +67,9 @@ public class TimesFileHandler {
         }
     }
     public void addCompetitionTimes(CompetitionTime time) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(TRAINING_TIMES_FILE, true))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(COMPETITION_TIMES_FILE, true))) {
 
-            writer.printf("%s;%s;%s;%s;%s;%d%n",
+            writer.printf("%s\t%s\t%s\t%s\t%s\t%d%n",
                     time.getMemberID(),
                     time.getTime(),
                     time.getDiscipline(),
@@ -83,7 +85,7 @@ public class TimesFileHandler {
     public void saveTrainingTimes(ArrayList<TrainingTime> times) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(TRAINING_TIMES_FILE))) {
             for (TrainingTime t : times) {
-                writer.printf("%s;%s;%s;%sn",
+                writer.printf("%s\t%s\t%s\t%sn",
                         t.getMemberID(),
                         t.getTime(),
                         t.getDiscipline(),
@@ -94,9 +96,9 @@ public class TimesFileHandler {
         }
     }
     public void saveCompetitionTimes(ArrayList<CompetitionTime> times) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(TRAINING_TIMES_FILE))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(COMPETITION_TIMES_FILE))) {
             for (CompetitionTime t : times) {
-                writer.printf("%s;%s;%s;%s;%s;%d%n",
+                writer.printf("%s\t%s\t%s\t%s\t%s\t%d%n",
                         t.getMemberID(),
                         t.getTime(),
                         t.getDiscipline(),

@@ -1,28 +1,30 @@
-package LogicHandler;
+package Helpers;
 
 import Models.Payment;
 import Models.Swimmer;
 import Storage.LocalStorage;
+import UI.AdminMenu;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import static LogicHandler.InputChecker.*;
+import static Helpers.InputChecker.*;
 
 public class EconLogic {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private Scanner scanner;
     private LocalStorage localStorage;
 
-    public EconLogic(LocalStorage localStorage) {
+    //jeg nåede ikke at splitte EconLogic væk fra scanneren, så her kan i se hvordan koden så ud før jeg reformerede den
+    public EconLogic(LocalStorage localStorage, Scanner scanner) {
         this.localStorage = localStorage;
+        this.scanner = scanner;
     }
 
     public void econMenu() {
         boolean quit = false;
         do {
-            System.out.println("\nØkonomi");
+            System.out.println("\n\nØkonomi");
             System.out.println("1. Se medlemers balance");
             System.out.println("2. Se medlemer i restance");
             System.out.println("3. Se medlems betalinger (deaktiveret)"); //TODO Nope
@@ -58,7 +60,7 @@ public class EconLogic {
     private void membersBalancePrint() {
         int i = 1;
         localStorage.getAllSwimmers().sort(new Swimmer.WorstEcon()); //TODO
-        System.out.printf("%-3s %-20s %10s%n", "Id", "Navn", "Saldo");
+
         for (Swimmer swimmer : localStorage.getAllSwimmers()) {
             System.out.printf("%-3d %-20s %10.2f%n", swimmer.getMemberId(), swimmer.getName(), swimmer.calMemberBalance());
         }
@@ -79,7 +81,7 @@ public class EconLogic {
         for (Swimmer swimmer : localStorage.getAllSwimmers()) {
             total += swimmer.getQuota();
         }
-        System.out.println(total);
+        System.out.printf("forventet samlet kontigent : %.2fkr fra foreningens %d medlemmer", total, localStorage.getAllSwimmers().size());
     }
 
 }

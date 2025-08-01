@@ -1,14 +1,16 @@
 package UI;
 
-import LogicHandler.TrainerHelper;
+import Helpers.TrainerHelper;
 import Models.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Set;
 
-import static LogicHandler.InputChecker.*;
+import static Helpers.InputChecker.*;
 
 public class TrainerMenu implements MenuI{
     private static Scanner scanner = null;
@@ -30,13 +32,21 @@ public class TrainerMenu implements MenuI{
     }
 
     //kom aldrig rigtig frem til en løsning som virker fornuftig
-    public void printTop5times(ArrayList<TrainingTime>[] top5inAllDis) {
+    //måske nu?
+    public void printTop5times(ArrayList<TrainingTime>[] top5inAllDis, String ageGroup) {
         int i = 0;
         for(ArrayList<TrainingTime> dis : top5inAllDis) {
-            System.out.println("Bedste svømmere i " + Discipline.values()[i]);
+            System.out.println();
+            System.out.println("Bedste " +ageGroup+ " svømmere i " + Discipline.values()[i]);
+            i++;
+            int j = 0;
             for(TrainingTime t : dis) {
                 String name = TrainerHelper.findComSwimmerFromId(t.getMemberID()).getName();
-                System.out.println(name + " " + t.getTime() + " " + t.getTrainingDate() + t.getDiscipline()); //TODO fjern Dis efter tests
+                String time = t.getTime().format(DateTimeFormatter.ofPattern("mm:ss"));
+                String date = t.getTrainingDate().format(DateTimeFormatter.ofPattern("MMM yyyy"));
+                System.out.printf("%-10s %10s %10s%n", name, time, date);
+                j++;
+                if (j == 5) break;
             }
         }
     }
@@ -49,16 +59,18 @@ public class TrainerMenu implements MenuI{
         return readValidInt(scanner);
     }
 
-    public Discipline askDiscipline() {
+    public Discipline askDiscipline(Set<Discipline> disciplines) {
         System.out.print("Hvilken disiplin blev svømmet?");
-        return readDiscipline(scanner);
+        return readDiscipline(scanner, disciplines);
     }
+
     public boolean askToAddDiscipline(CompetitionSwimmer swimmer, Discipline dis){
         System.out.println(swimmer.getName() + " er ikke registrert  " + dis);
         System.out.print("Vil du tilføje "+dis+" til "+swimmer.getName()+" liste? (Y/N): ");
         String input = scanner.nextLine();
         return input.equalsIgnoreCase("y");
     }
+
     public LocalDate readTrainingDate() {
         System.out.println("Indtast dato for tidssætningen");
         return readDate(scanner);

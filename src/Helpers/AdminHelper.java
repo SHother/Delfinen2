@@ -1,4 +1,4 @@
-package LogicHandler;
+package Helpers;
 
 import Models.CompetitionSwimmer;
 import Models.Discipline;
@@ -41,13 +41,17 @@ public class AdminHelper {
 
         if (!isCompSwimmer) {
             Swimmer swimmer = new Swimmer(name, birthday, membership);
-            if (AdminMenu.creationConformation(swimmer))    return swimmer;
+            if (AdminMenu.creationConformation(swimmer))
+                return swimmer;
 
         } else {
+
             int trainerId = AdminMenu.chooseTrainer(localStorage.getTrainers());
             Set<Discipline> disciplines = AdminMenu.chooseDisciplines();
             CompetitionSwimmer swimmer = new CompetitionSwimmer(name, birthday, membership, trainerId, disciplines);
-            if (AdminMenu.creationConformation(swimmer))    return swimmer;
+
+            if (AdminMenu.creationConformation(swimmer))
+                return swimmer;
         }
         return null;
     }

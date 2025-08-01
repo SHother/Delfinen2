@@ -1,12 +1,11 @@
-import LogicHandler.AdminHelper;
-import LogicHandler.EconHelper;
-import LogicHandler.EconLogic;
-import LogicHandler.TrainerHelper;
+import Helpers.AdminHelper;
+import Helpers.EconLogic;
+import Helpers.TrainerHelper;
 import Storage.LocalStorage;
 
 import java.util.Scanner;
 
-import static LogicHandler.InputChecker.readValidInt;
+import static Helpers.InputChecker.readValidInt;
 
 public class Application {
 
@@ -24,11 +23,10 @@ public class Application {
             System.out.print("Vælg en mulighed: ");
 
             int choice = readValidInt(scanner);
-
             switch (choice) {
                 case 1 -> new AdminHelper(storage, scanner).run();
                 case 2 -> new TrainerHelper(storage, scanner).run();
-                case 3 -> new EconLogic(storage).econMenu(); // TODO split EconLogic -> Menu & Helper
+                case 3 -> new EconLogic(storage, scanner).econMenu(); // TODO split EconLogic -> Menu & Helper
                 case 9 -> quit = true;
                 default -> System.out.println("Ugyldigt valg.");
             }
@@ -36,4 +34,5 @@ public class Application {
 
         System.out.println("Lukker");
     }
+
 }

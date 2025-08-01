@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Set;
 
-import static LogicHandler.InputChecker.readValidInt;
+import static Helpers.InputChecker.readDate;
+import static Helpers.InputChecker.readValidInt;
 
 public class AdminMenu implements MenuI {
 
@@ -36,12 +37,12 @@ public class AdminMenu implements MenuI {
 
     public static String readName() {
         System.out.print("Navn: ");
-        return scanner.nextLine();
+        return scanner.nextLine(); //TODO check for tegn der bliver brugt i filerne
     }
 
     public static LocalDate readBirthday() {
-        System.out.print("Fødselsdato (yyyy-MM-dd): ");
-        return LocalDate.parse(scanner.nextLine()); // Tilføj evt. validering
+        System.out.println("Medlems Fødselsdag");
+        return readDate(scanner);
     }
 
     public static boolean askMembership() {
@@ -95,8 +96,11 @@ public class AdminMenu implements MenuI {
         }
         return disciplines;
     }
+
+    //TODO Spørg om medlem skal oprettes
+    // og lav bedre creationPrint
     public static boolean creationConformation(Swimmer swimmer) {
+        System.out.println("medlem oprettet " + swimmer.toString());
         return true;
     }
-
 }

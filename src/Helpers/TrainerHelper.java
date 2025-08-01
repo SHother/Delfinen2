@@ -1,4 +1,4 @@
-package LogicHandler;
+package Helpers;
 
 import Models.CompetitionSwimmer;
 import Models.CompetitionTime;
@@ -10,7 +10,6 @@ import UI.TrainerMenu;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class TrainerHelper {
@@ -31,30 +30,26 @@ public class TrainerHelper {
                     break;
                 case 3:
                     ArrayList<TrainingTime>[] top5inAllDis = getTop5times(getJuniorCompSwimmers());
-                    trainerMenu.printTop5times(top5inAllDis);
+                    trainerMenu.printTop5times(top5inAllDis, "juniorer");
                     break;
                 case 4:
                     ArrayList<TrainingTime>[] top5inAllDiss = getTop5times(getSeniorCompSwimmers());
-                    trainerMenu.printTop5times(top5inAllDiss);
+                    trainerMenu.printTop5times(top5inAllDiss, "seniorer");
                     break;
                 case 9:
+                    quit = true;
                     break;
             }
         }
     }
-    private TrainingTime registerTime(int option){
+    private void registerTime(int option){
         int swimmerId = trainerMenu.readSwimmerId(localStorage.getCompetitionSwimmers());
 
         CompetitionSwimmer swimmer = findComSwimmerFromId(swimmerId);
 
-        if (swimmer == null) return null;
+        if (swimmer == null) return;
 
-        Discipline dis = trainerMenu.askDiscipline();
-
-        if (dis == null) return null;
-        if (!swimmer.hasDiscipline(dis))
-            if (trainerMenu.askToAddDiscipline(swimmer, dis))
-                localStorage.addDisciplineToSwimmer(swimmer, dis);
+        Discipline dis = trainerMenu.askDiscipline(swimmer.getDisciplines());
 
         LocalDate date = trainerMenu.readTrainingDate();
         LocalTime time = trainerMenu.readTrainingTime();
@@ -66,7 +61,6 @@ public class TrainerHelper {
             tt = new CompetitionTime(tt, cupName,placement);
         }
         localStorage.addTimeToSwimmer(swimmer, tt);
-        return tt;
     }
 
     private ArrayList<TrainingTime>[] getTop5times(ArrayList<CompetitionSwimmer> CompSwimmers){
@@ -75,9 +69,8 @@ public class TrainerHelper {
         for (Discipline dis : Discipline.values()) {
             ArrayList<TrainingTime> bestTimeInDis = new ArrayList<>();
             for (CompetitionSwimmer cs : CompSwimmers) {
-                if (cs.hasDiscipline(dis)) {
-                    bestTimeInDis.add(cs.fastestDisTime(dis));
-                }
+                TrainingTime tt = cs.fastestDisTime(dis);
+                if (tt != null) bestTimeInDis.add(cs.fastestDisTime(dis));
             }
             bestTimeInDis.sort(null);
             top5inAllDis[i] = bestTimeInDis;

@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import static Models.DisciplineConverter.stringToDiscipline;
-
 public class SwimmersFileHandler {
 
-    private static final String CHILL_SWIMMER_FILE = "chillSwimmers.txt";
-    private static final String COMPETITION_SWIMMER_FILE = "competitionSwimmers.txt";
+    private static final String PATH = "src/Storage/Database/";
+    private static final String CHILL = "chillSwimmers.txt";
+    private static final String COMPETITION = "competitionSwimmers.txt";
+    private static final String CHILL_SWIMMER_FILE = PATH + CHILL;
+    private static final String COMPETITION_SWIMMER_FILE = PATH + COMPETITION;
 
 
     public ArrayList<Swimmer> loadChillSwimmers() {
@@ -60,7 +61,7 @@ public class SwimmersFileHandler {
                     String[] strDisciplines = parts[6].split(",");
                     Set<Discipline> disciplines = new HashSet<>();
                     for (String strDiscipline : strDisciplines) {
-                        disciplines.add(stringToDiscipline(strDiscipline));
+                        disciplines.add(Discipline.stringToDiscipline(strDiscipline));
                     }
 
                     if (id > highetsId) highetsId = id;
@@ -96,14 +97,14 @@ public class SwimmersFileHandler {
 
     public void addCompetitionSwimmer(CompetitionSwimmer swimmer) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(COMPETITION_SWIMMER_FILE, true))) {
+
             StringBuilder disciplineList = new StringBuilder();
-            for (Discipline d : swimmer.getDisciplines()) {
-                disciplineList.append(d.name()).append(",");
-            }
-            if (!swimmer.getDisciplines().isEmpty()) {
+            if (swimmer.getDisciplines() != null) {
+                for (Discipline d : swimmer.getDisciplines()) {
+                    disciplineList.append(d.name()).append(",");
+                }
                 disciplineList.setLength(disciplineList.length() - 1);
             }
-
             writer.printf("%s;%s;%b;%s;%d;%d;%s%n",
                     swimmer.getName(),
                     swimmer.getBirthday(),
@@ -135,14 +136,14 @@ public class SwimmersFileHandler {
     public void saveCompetitionSwimmers(ArrayList<CompetitionSwimmer> swimmers) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(COMPETITION_SWIMMER_FILE))) {
             for (CompetitionSwimmer swimmer : swimmers) {
-                StringBuilder disciplineList = new StringBuilder();
-                for (Discipline d : swimmer.getDisciplines()) {
-                    disciplineList.append(d.name()).append(",");
-                }
-                if (!swimmer.getDisciplines().isEmpty()) {
-                    disciplineList.setLength(disciplineList.length() - 1); // Remove trailing comma
-                }
 
+                StringBuilder disciplineList = new StringBuilder();
+                if (swimmer.getDisciplines() != null) {
+                    for (Discipline d : swimmer.getDisciplines()) {
+                        disciplineList.append(d.name()).append(",");
+                    }
+                    disciplineList.setLength(disciplineList.length() - 1);
+                }
                 writer.printf("%s;%s;%b;%s;%d;%d;%s%n",
                         swimmer.getName(),
                         swimmer.getBirthday(),

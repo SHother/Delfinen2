@@ -1,4 +1,4 @@
-package LogicHandler;
+package Helpers;
 
 import Models.Discipline;
 import Models.Swimmer;
@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Set;
 
 public class InputChecker {
 
@@ -43,7 +44,7 @@ public class InputChecker {
             input = scanner.nextLine();
         }
         while (!isValidTimeFormat(input));
-        return LocalTime.parse(input, DateTimeFormatter.ofPattern("mm:ss"));
+        return LocalTime.parse("00:" + input, DateTimeFormatter.ofPattern("HH:mm:ss"));
 
     }
     // fungere på samme måde som isValidDate
@@ -52,9 +53,8 @@ public class InputChecker {
         if (!input.matches(regex)) return false;
 
         try {
-            // Use pattern with minute and second only
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("mm:ss");
-            LocalTime.parse(input, formatter); // throws if invalid
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            LocalTime.parse("00:" + input, formatter); //LocalTime SKAL åbenbart bruge timer med i formatted...
             return true;
         } catch (DateTimeParseException e) {
             return false;
@@ -64,11 +64,26 @@ public class InputChecker {
     //TODO out of bounce
     public static Discipline readDiscipline(Scanner scanner){
         int i = 1;
+        System.out.println();
         for (Discipline dis : Discipline.values()) {
             System.out.println(i + ") " + dis);
             i++;
         }
         System.out.print("Vælg relevant id: ");
+        int input = readValidInt(scanner);
+        if (input < Discipline.values().length && input > 0) return Discipline.values()[input-1];
+        else return null;
+    }
+
+    public static Discipline readDiscipline(Scanner scanner, Set<Discipline> disciplines) {
+        int i = 1;
+        System.out.println();
+        for (Discipline dis : Discipline.values()) {
+            if (disciplines.contains(dis))
+                System.out.println(i + ") " + dis);
+            i++;
+        }
+        System.out.print("Vælg relevant id (input bliver ikke valideret): ");
         return Discipline.values()[readValidInt(scanner)-1];
     }
 
